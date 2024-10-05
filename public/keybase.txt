@@ -1,0 +1,54 @@
+==================================================================
+https://keybase.io/tonextone
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://tonextone.com
+  * I am tonextone (https://keybase.io/tonextone) on keybase.
+  * I have a public key ASDUMO1RmCUBUlvSgzab6w7ho8IkfUrN3d0cF-i9f-cBqAo
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "0120d430ed51982501525bd283369beb0ee1a3c2247d4acddddd1c17e8bd7fe701a80a",
+            "host": "keybase.io",
+            "kid": "0120d430ed51982501525bd283369beb0ee1a3c2247d4acddddd1c17e8bd7fe701a80a",
+            "uid": "6f35b48f26fd57681bea12481c2d4519",
+            "username": "tonextone"
+        },
+        "service": {
+            "hostname": "tonextone.com",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "client": {
+        "name": "keybase.io go client",
+        "version": "1.0.18"
+    },
+    "ctime": 1487304021,
+    "expire_in": 504576000,
+    "merkle_root": {
+        "ctime": 1487303899,
+        "hash": "5f5008c141ce7a0215a3daad04ea1f76521679c03f48c3ad3cb8e42afce88b7636d9b0eb53cba22aedab59f659def80b1baa9e9d1f5ac66f438c3d4368fa525c",
+        "seqno": 898998
+    },
+    "prev": "23f653e2465b8243ae14a1b1de572149e169165aaccb3f2b6d1ada27dff26994",
+    "seqno": 10,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg1DDtUZglAVJb0oM2m+sO4aPCJH1Kzd3dHBfovX/nAagKp3BheWxvYWTFAvd7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwZDQzMGVkNTE5ODI1MDE1MjViZDI4MzM2OWJlYjBlZTFhM2MyMjQ3ZDRhY2RkZGRkMWMxN2U4YmQ3ZmU3MDFhODBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwZDQzMGVkNTE5ODI1MDE1MjViZDI4MzM2OWJlYjBlZTFhM2MyMjQ3ZDRhY2RkZGRkMWMxN2U4YmQ3ZmU3MDFhODBhIiwidWlkIjoiNmYzNWI0OGYyNmZkNTc2ODFiZWExMjQ4MWMyZDQ1MTkiLCJ1c2VybmFtZSI6InRvbmV4dG9uZSJ9LCJzZXJ2aWNlIjp7Imhvc3RuYW1lIjoidG9uZXh0b25lLmNvbSIsInByb3RvY29sIjoiaHR0cHM6In0sInR5cGUiOiJ3ZWJfc2VydmljZV9iaW5kaW5nIiwidmVyc2lvbiI6MX0sImNsaWVudCI6eyJuYW1lIjoia2V5YmFzZS5pbyBnbyBjbGllbnQiLCJ2ZXJzaW9uIjoiMS4wLjE4In0sImN0aW1lIjoxNDg3MzA0MDIxLCJleHBpcmVfaW4iOjUwNDU3NjAwMCwibWVya2xlX3Jvb3QiOnsiY3RpbWUiOjE0ODczMDM4OTksImhhc2giOiI1ZjUwMDhjMTQxY2U3YTAyMTVhM2RhYWQwNGVhMWY3NjUyMTY3OWMwM2Y0OGMzYWQzY2I4ZTQyYWZjZTg4Yjc2MzZkOWIwZWI1M2NiYTIyYWVkYWI1OWY2NTlkZWY4MGIxYmFhOWU5ZDFmNWFjNjZmNDM4YzNkNDM2OGZhNTI1YyIsInNlcW5vIjo4OTg5OTh9LCJwcmV2IjoiMjNmNjUzZTI0NjViODI0M2FlMTRhMWIxZGU1NzIxNDllMTY5MTY1YWFjY2IzZjJiNmQxYWRhMjdkZmYyNjk5NCIsInNlcW5vIjoxMCwidGFnIjoic2lnbmF0dXJlIn2jc2lnxEBpJYfTeEYT6xuCmrMv11DyiD+ezArJlPV93Ux+K+0KTUHu7oGt4D6OZ1I6INrQQC44zGDpC0YxREa32tpMUq4BqHNpZ190eXBlIKRoYXNogqR0eXBlCKV2YWx1ZcQgg0DLFKYBKsRGRSSyTa0SjSKtCftgR4asBkLfQZU2OQWjdGFnzQICp3ZlcnNpb24B
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/tonextone
+
+==================================================================

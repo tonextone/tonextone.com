@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="ja" lang="ja" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>tonextone.com/note/ - 2005-08-11</title>
+  <link rel="top" href="index.html" />
+
+  <link rel="stylesheet" href="style/style-sites.css" type="text/css" media="screen" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://legacy.tonextone.com/note/rss.rdf" />
+ </head>
+ <body>
+    <h1 id="banner"><a href="/note/../">tonextone.com</a><a href="https://tonextone.com/note/">/note/</a></h1>
+   <p id="credit">Last-modified: 2006-09-01 (金)</p>
+   <p id="credit">Copyright ©master_at_tonextone.com All rights reserved.</p>
+<div id="content">
+  
+  
+    <div id="menu">
+      <p> Date:<a href="index-d_2005.html">2005</a>/<a href="index-d_2005-08.html">August</a>/<a href="index-d_2005-08-11.html">11</a> (Total 1 items)</p>
+
+    </div>
+    <div class="item">
+  <h3><a href="diary/20050811.html">PHP フレームワーク その1</a></h3>
+  <span class="meta">
+    Posted : 2005-08-11 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    PHP のフレームワークを作ろうと思う。その名も GENUIN 。<br />
+    PHP の言語設計上の特長や、 legacy を尊重した、<br />
+    「オブジェクト指向」ではなく、<br />
+    「オブジェクト思考」あるいは「オブジェクト嗜好」なフレームワーク。<br />
+    Perl のオブジェクト指向の実装を参考にしたい。
+    <br />
+    <h4>特徴:</h4>
+    <ul>
+      <li>
+        クラスを使わない。命名規約や配列や、その他 genuine な概念を駆使する。<br />
+        $_CONFs,$_PARAMs,$_MESSAGEs,$_DB_*,$_SQL_*,...
+      </li>
+      <li>
+        register_globals_securely On. <br />
+        リクエスト変数へのグローバルアクセスをセキュアに提供。
+      </li>
+      <li>
+        テンプレートエンジンを使わない。PHP で充分。<br />
+        <br />
+        $ less hoge.html
+        <pre>
+&lt;?function _head($_){?&gt;
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    foo
+    &lt;?o($_['var_head']);?&gt;
+    bar
+    &lt;?}?&gt;
+
+    &lt;?function _loop($_){?&gt;
+    foo
+    &lt;?o($_['var_loop']);?&gt;
+    bar
+    &lt;?}?&gt;
+
+    &lt;?function _tail($_){?&gt;
+    foo
+    &lt;?o($_['var_tail']);?&gt;
+    bar
+  &lt;/body&gt;
+&lt;/html&gt;
+&lt;?}?&gt;
+&lt;?
+include_once('path/to/config.php')
+include_once($_CONF['path']['to_controller'].'hoge.php')
+?&gt;
+        </pre>
+        <br />
+        $ less hoge.php
+        <pre>
+&lt;?
+
+// process_any();
+
+$_ = $_PARAMs['head'];
+_head($_);
+unset($_);
+
+foreach ($_PARAMs['loop'] as $var)
+{
+  $_ = $var;
+  _loop($_);
+  unset($_);
+}
+
+$_ = $_PARAMs['tail'];
+_tail($_);
+unset($_);
+?&gt;
+        </pre>
+
+      </li>
+    </ul>
+  
+    
+  </div>
+  
+<div class="writeback">
+    <h4>トラックバック</h4>
+    
+    
+        (1)<br />
+    
+    <h4>ツッコミ</h4>
+    <dl id="writebacklist">
+    <dt>1: master <small>(08/12 10:37) </small></dt><dd>「プログラマー日記」さんも同じ事を考えているらしい。<br /><a href="http://www.programmers-paradise.com/tdiary/?date=20050801#p01" target="_blank">http://www.programmers-paradise.com/tdiary/?date=20050801#p01</a><br /><a href="http://www.programmers-paradise.com/tdiary/?date=20050808#p02" target="_blank">http://www.programmers-paradise.com/tdiary/?date=20050808#p02</a><br /><a href="http://www.programmers-paradise.com/tdiary/?date=20050809#p02" target="_blank">http://www.programmers-paradise.com/tdiary/?date=20050809#p02</a><br /><a href="http://www.programmers-paradise.com/tdiary/?date=20050809#p03" target="_blank">http://www.programmers-paradise.com/tdiary/?date=20050809#p03</a></dd>
+<dt>2: itoh <small>(09/15 00:18) </small></dt><dd>p0t.jpの人も同じ事書いてた。<br /><a href="http://p0t.jp/mt/archives/2005/08/2_1.html" target="_blank">http://p0t.jp/mt/archives/2005/08/2_1.html</a><br />1行フレームワークAwesomeFrameworkだって。<br />命名規則っていうのは多かれ少なかれつかいますなー。</dd>
+<dt>3: master <small>(10/30 16:41) </small></dt><dd>メモ:<br /><br />ライブラリはなるべく標準的なものを使う。<br />PEAR::<br /> DB, DB_DataObject, <br /> HTTP_Client, Mail_Mime, <br /> Auth, XML_Serializer, XML_RPC<br /><br />PECL の filter も気になる。<br />( <a href="http://pecl.php.net/package/filter" target="_blank">http://pecl.php.net/package/filter</a> )</dd>
+
+    </dl>
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" />
+  
+</div>
+<div id="links">
+<ul>
+  <li>Search
+    <form action="/note/" method="get" enctype="UTF-8">
+<p>
+<input type="hidden" name="m" value="search" />
+<input type="hidden" name="cache" value="off" />
+<input type="text" name="q" value="" size="10" />
+<select name="u">
+<option value="">ALL</option>
+<option value="info">奥付</option>
+<option value="diary">開発日誌</option>
+</select>
+</p>
+<p>
+<input type="checkbox" name="cmt" value="1" checked="checked" />ﾂｯｺﾐも
+<input type="checkbox" name="and" value="1" checked="checked" />AND
+<input type="submit" value="検索" />
+</p>
+</form>
+
+  </li>
+  <li>Calendar
+    <table border="0" cellspacing="0" cellpadding="0" class="calendar">
+<tr class="caption"><td><a href="index-d_2005-07.html">«</a></td><th colspan="5">August 2005</th><td><a href="index-d_2005-09.html">»</a></td></tr>
+<tr><th class="su">Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th class="sa">Sa</th></tr>
+<tr><td class="su"></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="sa">6</td></tr>
+<tr><td class="su">7</td><td>8</td><td>9</td><td>10</td><td><a href="index-d_2005-08-11.html" title="PHP フレームワーク その1">11</a></td><td>12</td><td class="sa">13</td></tr>
+<tr><td class="su">14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td class="sa">20</td></tr>
+<tr><td class="su">21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td class="sa">27</td></tr>
+<tr><td class="su">28</td><td><a href="index-d_2005-08-29.html" title="JavaScript の *.onkey* と IME の事情。その1">29</a></td><td>30</td><td>31</td><td></td><td></td><td class="sa"></td></tr>
+</table>
+
+  </li>
+  <li>Archives
+    <ul>
+<li><a href="index-d_2006.html">2006</a> (6)</li>
+<li><a href="index-d_2005.html">2005</a> (32)<ul>
+  <li><a href="index-d_2005-12.html">December</a> (8)</li>
+  <li><a href="index-d_2005-11.html">November</a> (3)</li>
+  <li><a href="index-d_2005-10.html">October</a> (1)</li>
+  <li><a href="index-d_2005-09.html">September</a> (4)</li>
+  <li><a href="index-d_2005-08.html">August</a> (2)</li>
+  <li><a href="index-d_2005-07.html">July</a> (4)</li>
+  <li><a href="index-d_2005-06.html">June</a> (2)</li>
+  <li><a href="index-d_2005-05.html">May</a> (7)</li>
+  <li><a href="index-d_2005-04.html">April</a> (1)</li>
+</ul></li>
+</ul>
+  </li>
+  <li>Categories
+    <ul>
+<li><a href="index.html">Top</a> (39)<ul>
+  <li><a href="info/index.html">奥付</a> (1)</li>
+  <li><a href="diary/index.html">開発日誌</a> (31)</li>
+  <li><a href="bbs/index.html">bbs</a> (0)</li>
+  <li><a href="essay/index.html">随筆</a> (3)</li>
+</ul></li>
+</ul>
+  </li>
+  <li>Recent Entries
+    <ul>
+      <li>09/01 <a href="20060901.html">ブログシステム乗り換えます。</a></li>
+<li>06/12 <a href="diary/20060612.html">open_basedir の 怪</a></li>
+<li>05/29 <a href="diary/20060529.html">俺的PHP似非フレームワーク</a></li>
+<li>05/28 <a href="diary/20060528.html">PHP の強み</a></li>
+<li>03/16 <a href="diary/20060316.html">JavaScript による min-height, max-height の実装。</a></li>
+<li>02/27 <a href="diary/20060227.html">ちょっと安全かもしれない eval() の使い方。</a></li>
+<li>12/31 <a href="20051231.html">新年の挨拶</a></li>
+<li>12/23 <a href="diary/20051223.html">PostgreSQL で RDB 設計 その2</a></li>
+<li>12/22 <a href="diary/20051222.html">PostgreSQL で RDB 設計 その1</a></li>
+<li>12/13 <a href="diary/server/20051213.html">サーバ管理その1</a></li>
+
+    </ul>
+  </li>
+  <li>Recent Comments
+    
+  </li>
+  <li>Recent TrackBacks
+    
+  </li>
+  <li>Syndicate this site
+    <ul>
+      <li><a href="http://legacy.tonextone.com/note/rss.rdf">RSS 1.0 Feed</a></li>
+    </ul>
+  </li>
+  <li>Powered by
+    <ul>
+      <li>
+        <a href="http://rinn.e-site.jp/rnote/">rNote 0.9.7.5</a>
+      </li>
+      <li>
+        <a href="http://www.bookshelf.jp/soft/meadow.html">Meadow</a>
+      </li>
+      <li>
+        <a href="http://winscp.net/eng/">WinSCP</a>
+      </li>
+    </ul>
+  </li>
+  <li>Del.icio.us tags
+    <script type="text/javascript" src="http://del.icio.us/feeds/js/tags/tonextone?sort=freq;totals;size=10-17;color=000000-0000ff;title="></script>
+  </li>
+  <li>Flickr recent photos
+    <!-- Start of Flickr Badge -->
+    <style type="text/css">/*
+    Images are wrapped in divs classed "flickr_badge_image" with ids
+    "flickr_badge_imageX" where "X" is an integer specifying ordinal position.
+    Below are some styles to get you started!
+    */
+    #flickr_badge_uber_wrapper {text-align:center; width:auto;}
+    #flickr_badge_wrapper {padding:0px;}
+    .flickr_badge_image {float:left; margin:2px;}
+    .flickr_badge_image img {border: 1px solid black !important;}
+    #flickr_badge_source {text-align:left; margin:0 10px 0 10px;}
+    #flickr_badge_icon {float:left; margin-right:5px;}
+    #flickr_www {display:block; padding:0 10px 0 10px !important; font: 11px Arial, Helvetica, Sans serif !important; color:#3993ff !important;}
+    #flickr_badge_uber_wrapper a:hover,
+    #flickr_badge_uber_wrapper a:link,
+    #flickr_badge_uber_wrapper a:active,
+    #flickr_badge_uber_wrapper a:visited {text-decoration:none !important; background:inherit !important;color:#3993ff;}
+    #flickr_badge_wrapper {background-color:#ffffff;border: none;}
+    #flickr_badge_source {padding:0 !important; font: 11px Arial, Helvetica, Sans serif !important; color:#666666 !important;}
+    </style>
+    <div id="flickr_badge_uber_wrapper">
+      <a href="http://www.flickr.com" id="flickr_www">www.<strong style="color:#3993ff">flick<span style="color:#ff1c92">r</span></strong>.com</a>
+      <div id="flickr_badge_wrapper">
+        <script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=10&display=latest&size=t&layout=x&source=user&user=11342253%40N00"></script>
+      </div>
+    </div>
+    <br style="clear:both;">
+    <!-- End of Flickr Badge -->
+    
+  </li>
+  <li>Last.fm Weekly tracks
+    <a href="http://www.last.fm/user/tonextone/?chartstyle=sideGrey"><img src="http://imagegen.last.fm/sideGrey/tracks/tonextone.gif" border="0" alt="tonextone's Last.fm Weekly Tracks Chart" /></a>
+  </li>
+  <li>早起き生活
+    <a href="http://www.hayaoki-seikatsu.com/">
+      <img src="http://www.hayaoki-seikatsu.com/users/tonextone/graphs/sidebar.png" width="150" height="150" alt="早起き生活">
+    </a>
+  </li>
+  <li>
+    <a href="http://www.technorati.com/claim/ud3qys35px" rel="me"></a>
+  </li>
+</ul>
+</div>
+</body></html>

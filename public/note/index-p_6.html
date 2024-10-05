@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="ja" lang="ja" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>tonextone.com/note/</title>
+  <link rel="top" href="index.html" />
+<link rel="prev" href="index-p_7.html" title="36-38" />
+<link rel="next" href="index-p_5.html" title="26-30" />
+  <link rel="stylesheet" href="style/style-sites.css" type="text/css" media="screen" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://legacy.tonextone.com/note/rss.rdf" />
+ </head>
+ <body>
+    <h1 id="banner"><a href="/note/../">tonextone.com</a><a href="https://tonextone.com/note/">/note/</a></h1>
+   <p id="credit">Last-modified: 2006-09-01 (金)</p>
+   <p id="credit">Copyright ©master_at_tonextone.com All rights reserved.</p>
+<div id="content">
+  
+  
+    <div id="menu">
+      <p>Category:<a href="index.html">Top</a> (Total 38 items)</p>
+<p><a href="index-p_7.html">« 36-38</a> | 31-35 | <a href="index-p_5.html">26-30 »</a></p>
+    </div>
+    <div class="item">
+  <h3><a href="diary/20050527.html">JS::Object その2</a></h3>
+  <span class="meta">
+    Posted : 2005-05-27 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    <a href="https://tonextone.com/note/diary/20050526.html">昨日のエントリ</a>の続き。<br />
+    結局、
+<pre>
+myObject = {
+            myProperty : 'プロパティ',
+            myMethod : function() { /*メソッド*/ }
+           };
+</pre>
+は、
+<pre>
+myObject = new (
+                function(){
+                  this.myProperty = 'プロパティ';
+                  this.constructor.prototype.myMethod = function() { /*メソッド*/ };
+                }
+               );
+</pre>
+と、等価という風に理解した。<br />
+<br />
+参考:<br />
+http://wsabstract.com/jsref/<br />
+http://www.hawk.34sp.com/stdpls/jsnotes/<br />
+http://www.interq.or.jp/student/exeal/dss/ejs/<br />
+http://www.parkcity.ne.jp/~chaichan/src/2ndthema.htm<br />
+  
+    
+  </div>
+  
+<div class="writeback">
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/20050526.html">JS::Object その1</a></h3>
+  <span class="meta">
+    Posted : 2005-05-26 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    出回ってるJavaScriptライブラリをカスタムしてて、ちょっと混乱している。<br />
+    <br />
+    こういうことか?<br />
+<pre>
+// 自前のコンストラクタでオブジェクトを作る。
+MyObject = function(){};
+myObject = new MyObject;
+
+// いきなりオブジェクトを作る。
+myObject = {};
+</pre>
+
+  
+    
+      
+      
+        <p>[ <a href="diary/20050526.html#add">続きがあります</a> ]</p>
+      
+    
+  </div>
+  
+<div class="writeback">
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/20050522.html">Valid XHTML な検索エンジン</a></h3>
+  <span class="meta">
+    Posted : 2005-05-22 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    Google Yahoo! などのAPIは、<br />
+    簡単に言うと検索結果を XML で取得するためのものだ。<br />
+    で普通の検索結果は HTML で提供される。そういう戦略。<br />
+    でも、msnsearch は XHTML らしい。<a href="http://validator.w3.org/check?uri=http%3A%2F%2Fbeta.search.msn.com%2Fresults.aspx%3Fq%3Dtest">ほら</a>。<br />
+    <br />
+    結果のRSSも取れるし、MSNSearch って実は使えるんじゃないか?
+  
+    
+  </div>
+  
+<div class="writeback">
+    <h4>ツッコミ</h4>
+    <dl id="writebacklist">
+    <dt>1: master <small>(05/25 22:05) </small></dt><dd>Y! Search も、RSS とれる。<br /><a href="http://api.search.yahoo.com/WebSearchService/rss/webSearch.xml?appid=yahoosearchwebrss&query=test&adult_ok=1" target="_blank">http://api.search.yahoo.com/WebSearchService/rss/webSearch.xml?appid=yahoosearchwebrss&amp;query=test&amp;adult_ok=1</a><br />API 使えば、Google も Y! も XML でとれるんだけど、<br />問合せ回数に制限があるので、どうしようかと思っていたところ。<br />Y! の RSS で様子見。</dd>
+<dt>2: master <small>(05/26 16:07) </small></dt><dd>RSSで検索結果を取り回す枠組を opensearch というらしい。<br /><a href="http://opensearch.a9.com/" target="_blank">http://opensearch.a9.com/</a></dd>
+
+    </dl>
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/20050518.html">sparQuery</a></h3>
+  <span class="meta">
+    Posted : 2005-05-18 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    ここ1ヶ月くらいボチボチ取り組んでいるsparQuery という個人プロジェクトについて。<br />
+    ソーシャルクエリシステム(SQS)。<br />
+    以下に、ToDo を記録。<br />
+    3番目までを、5月中に実装して、 β 公開して、軽くプロモーションする予定。<br />
+    4番目は、内部仕様なので、追々。でも、重要。<br />
+    書いてないけど UI (ヴィジュアル含む)の最適化も重要。
+  
+    
+      
+      
+        <p>[ <a href="diary/20050518.html#add">続きがあります</a> ]</p>
+      
+    
+  </div>
+  
+<div class="writeback">
+    <h4>ツッコミ</h4>
+    <dl id="writebacklist">
+    <dt>1: master <small>(06/01 10:54) </small></dt><dd>予定はズレズレ。1,2,3 をすっ飛ばして、4. を opensearch で実装。</dd>
+<dt>2: master <small>(06/23 23:50) </small></dt><dd>進捗率:<br />1(70%), 2(20%), 3(0%), 4(90%).<br />今後の予定:<br />まず、3. に着手。<br />次に、2. に着手。<br /><br />完了したら、新たに以下のタスクを加える。<br />5. スコアリング<br />検索結果の各レコードに、サーバ側でスコアを付加してクライアントに返す枠組。<br />スコアリングは、Bayesian にする。</dd>
+
+    </dl>
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/server/20050513.html">サーバ整備進捗</a></h3>
+  <span class="meta">
+    Posted : 2005-05-13 00:00 / Category : [開発日誌/server]
+  </span>
+  <div class="text">
+    <ul>
+      <li><del>emacs</del></li>
+      <li><del>APP(ApachePostgresqlPhp)</del></li>
+      <li><del>qmail</del></li>
+      <li><del>ImageMagick</del></li>
+      <li><del>logrotage</del></li>
+      <li><del>backup/restore</del></li>
+      <li><del>AWStats</del></li>
+    </ul>
+  
+    
+      
+      
+        <p>[ <a href="diary/server/20050513.html#add">続きがあります</a> ]</p>
+      
+    
+  </div>
+  
+<div class="writeback">
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" />
+  
+</div>
+<div id="links">
+<ul>
+  <li>Search
+    <form action="/note/" method="get" enctype="UTF-8">
+<p>
+<input type="hidden" name="m" value="search" />
+<input type="hidden" name="cache" value="off" />
+<input type="text" name="q" value="" size="10" />
+<select name="u">
+<option value="">ALL</option>
+<option value="info">奥付</option>
+<option value="diary">開発日誌</option>
+</select>
+</p>
+<p>
+<input type="checkbox" name="cmt" value="1" checked="checked" />ﾂｯｺﾐも
+<input type="checkbox" name="and" value="1" checked="checked" />AND
+<input type="submit" value="検索" />
+</p>
+</form>
+
+  </li>
+  <li>Calendar
+    <table border="0" cellspacing="0" cellpadding="0" class="calendar">
+<tr class="caption"><td><a href="index-d_2006-06.html">«</a></td><th colspan="5">September 2006</th><td></td></tr>
+<tr><th class="su">Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th class="sa">Sa</th></tr>
+<tr><td class="su"></td><td></td><td></td><td></td><td></td><td><a href="index-d_2006-09-01.html" title="ブログシステム乗り換えます。">1</a></td><td class="sa">2</td></tr>
+<tr><td class="su">3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td class="sa">9</td></tr>
+<tr><td class="su">10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td class="sa">16</td></tr>
+<tr><td class="su">17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td class="sa">23</td></tr>
+<tr><td class="su">24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td class="sa">30</td></tr>
+</table>
+
+  </li>
+  <li>Archives
+    <ul>
+<li><a href="index-d_2006.html">2006</a> (6)</li>
+<li><a href="index-d_2005.html">2005</a> (32)</li>
+</ul>
+  </li>
+  <li>Categories
+    <ul>
+<li><a href="index.html">Top</a> (39)<ul>
+  <li><a href="info/index.html">奥付</a> (1)</li>
+  <li><a href="diary/index.html">開発日誌</a> (31)</li>
+  <li><a href="bbs/index.html">bbs</a> (0)</li>
+  <li><a href="essay/index.html">随筆</a> (3)</li>
+</ul></li>
+</ul>
+  </li>
+  <li>Recent Entries
+    <ul>
+      <li>09/01 <a href="20060901.html">ブログシステム乗り換えます。</a></li>
+<li>06/12 <a href="diary/20060612.html">open_basedir の 怪</a></li>
+<li>05/29 <a href="diary/20060529.html">俺的PHP似非フレームワーク</a></li>
+<li>05/28 <a href="diary/20060528.html">PHP の強み</a></li>
+<li>03/16 <a href="diary/20060316.html">JavaScript による min-height, max-height の実装。</a></li>
+<li>02/27 <a href="diary/20060227.html">ちょっと安全かもしれない eval() の使い方。</a></li>
+<li>12/31 <a href="20051231.html">新年の挨拶</a></li>
+<li>12/23 <a href="diary/20051223.html">PostgreSQL で RDB 設計 その2</a></li>
+<li>12/22 <a href="diary/20051222.html">PostgreSQL で RDB 設計 その1</a></li>
+<li>12/13 <a href="diary/server/20051213.html">サーバ管理その1</a></li>
+
+    </ul>
+  </li>
+  <li>Recent Comments
+    
+  </li>
+  <li>Recent TrackBacks
+    
+  </li>
+  <li>Syndicate this site
+    <ul>
+      <li><a href="http://legacy.tonextone.com/note/rss.rdf">RSS 1.0 Feed</a></li>
+    </ul>
+  </li>
+  <li>Powered by
+    <ul>
+      <li>
+        <a href="http://rinn.e-site.jp/rnote/">rNote 0.9.7.5</a>
+      </li>
+      <li>
+        <a href="http://www.bookshelf.jp/soft/meadow.html">Meadow</a>
+      </li>
+      <li>
+        <a href="http://winscp.net/eng/">WinSCP</a>
+      </li>
+    </ul>
+  </li>
+  <li>Del.icio.us tags
+    <script type="text/javascript" src="http://del.icio.us/feeds/js/tags/tonextone?sort=freq;totals;size=10-17;color=000000-0000ff;title="></script>
+  </li>
+  <li>Flickr recent photos
+    <!-- Start of Flickr Badge -->
+    <style type="text/css">/*
+    Images are wrapped in divs classed "flickr_badge_image" with ids
+    "flickr_badge_imageX" where "X" is an integer specifying ordinal position.
+    Below are some styles to get you started!
+    */
+    #flickr_badge_uber_wrapper {text-align:center; width:auto;}
+    #flickr_badge_wrapper {padding:0px;}
+    .flickr_badge_image {float:left; margin:2px;}
+    .flickr_badge_image img {border: 1px solid black !important;}
+    #flickr_badge_source {text-align:left; margin:0 10px 0 10px;}
+    #flickr_badge_icon {float:left; margin-right:5px;}
+    #flickr_www {display:block; padding:0 10px 0 10px !important; font: 11px Arial, Helvetica, Sans serif !important; color:#3993ff !important;}
+    #flickr_badge_uber_wrapper a:hover,
+    #flickr_badge_uber_wrapper a:link,
+    #flickr_badge_uber_wrapper a:active,
+    #flickr_badge_uber_wrapper a:visited {text-decoration:none !important; background:inherit !important;color:#3993ff;}
+    #flickr_badge_wrapper {background-color:#ffffff;border: none;}
+    #flickr_badge_source {padding:0 !important; font: 11px Arial, Helvetica, Sans serif !important; color:#666666 !important;}
+    </style>
+    <div id="flickr_badge_uber_wrapper">
+      <a href="http://www.flickr.com" id="flickr_www">www.<strong style="color:#3993ff">flick<span style="color:#ff1c92">r</span></strong>.com</a>
+      <div id="flickr_badge_wrapper">
+        <script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=10&display=latest&size=t&layout=x&source=user&user=11342253%40N00"></script>
+      </div>
+    </div>
+    <br style="clear:both;">
+    <!-- End of Flickr Badge -->
+    
+  </li>
+  <li>Last.fm Weekly tracks
+    <a href="http://www.last.fm/user/tonextone/?chartstyle=sideGrey"><img src="http://imagegen.last.fm/sideGrey/tracks/tonextone.gif" border="0" alt="tonextone's Last.fm Weekly Tracks Chart" /></a>
+  </li>
+  <li>早起き生活
+    <a href="http://www.hayaoki-seikatsu.com/">
+      <img src="http://www.hayaoki-seikatsu.com/users/tonextone/graphs/sidebar.png" width="150" height="150" alt="早起き生活">
+    </a>
+  </li>
+  <li>
+    <a href="http://www.technorati.com/claim/ud3qys35px" rel="me"></a>
+  </li>
+</ul>
+</div>
+</body></html>

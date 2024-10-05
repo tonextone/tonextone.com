@@ -1,0 +1,895 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="sixapart-standard">
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta name="generator" content="Movable Type 3.32-ja" />
+   
+   <title>svn 入門 (tonextone.com/type/)</title>
+   
+   <link rel="stylesheet" type="text/css" href="https://tonextone.com/type/styles-site.css" />
+   <link rel="stylesheet" type="text/css" 
+    href="https://tonextone.com/hack/dp.SyntaxHighlighter/Styles/SyntaxHighlighter.css"></link>
+   
+   <link rel="alternate" type="application/atom+xml" title="Atom" href="https://tonextone.com/type/atom.xml" />
+   <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://tonextone.com/type/index.xml" />
+   <link rel="start" href="https://tonextone.com/type/" title="Home" />
+   <link rel="prev" href="https://tonextone.com/type/2006/10/19-1909.html" title="転職活動中。" />
+   <link rel="next" href="https://tonextone.com/type/2006/11/30-1644.html" title="svn 入門(その2)" />
+   
+   <!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="https://tonextone.com/type/2006/11/16-1708.html"
+    trackback:ping="https://tonextone.com/type/app/mt-tb.cgi/7"
+    dc:title="svn 入門"
+    dc:identifier="https://tonextone.com/type/2006/11/16-1708.html"
+    dc:subject="やりくりする"
+    dc:description="   運用中の最新ファイルでローカルの作業コピーを更新    emacs(mea..."
+    dc:creator=""
+    dc:date="2006-11-16T17:08:28+09:00" />
+</rdf:RDF>
+-->
+
+   
+   
+   
+   <script type="text/javascript" src="https://tonextone.com/type/mt-site.js"></script>
+   
+</head>
+<body class="layout-two-column-right individual-entry-archive" onload="individualArchivesOnLoad(commenter_name)">
+   <div id="container">
+      <div id="container-inner" class="pkg">
+
+         <div id="banner">
+            <div id="banner-inner" class="pkg">
+<!--
+               <h1 id="banner-header"><a href="https://tonextone.com/type/" accesskey="1">tonextone.com/type/</a></h1>
+-->
+               <h1 id="banner-header"><a href="https://tonextone.com/" accesskey="1">tonextone.com/</a><a href="https://tonextone.com/type/">type/</a></h1>
+               <h2 id="banner-description"></h2>
+            </div>
+         </div>
+
+         <div id="pagebody">
+            <div id="pagebody-inner" class="pkg">
+               <div id="alpha">
+                  <div id="alpha-inner" class="pkg">
+
+                     <p class="content-nav">
+                        <a href="https://tonextone.com/type/2006/10/19-1909.html">&laquo; 転職活動中。</a> |
+                        <a href="https://tonextone.com/type/">メイン</a>
+                        | <a href="https://tonextone.com/type/2006/11/30-1644.html">svn 入門(その2) &raquo;</a>
+                     </p>
+
+
+                     <h2 id="archive-title">svn 入門</h2>
+                     <div class="entry" id="entry-7">
+                        <div class="entry-content">
+                                                      <div class="entry-body">
+                              <ol>
+  <li>運用中の最新ファイルでローカルの作業コピーを更新</li>
+  <li> emacs(meadow) で編集</li>
+  <li> ediff で差分確認</li>
+  <li>更新</li>
+</ol>
+<br />
+というのを手作業で繰り返すのはもうイヤだ。<br />
+いい加減バージョン管理システムが必要だ。<br />
+<br />
+つーわけで、Subversion にスムーズに移行すべく調査、検討した。<br />
+                           </div>
+                           
+                                                      <div id="more" class="entry-more">
+                              現在の構成は以下の通り、<br />
+<ul>
+  <li>Subversion 1.3.2 (cygwin 版)</li>
+  <li>meadow 2.10 (based on GNU Emacs 21.4.1)</li>
+  <li>vc-svn.el (Jim Blandy 版)</li>
+</ul>
+<br />
+方針として、極力フロントエンドで調整する。<br />
+バックエンドの設定項目にも、ざっと目を通しておくけど、デフォルト前提で。<br />
+
+<h3>◆ Subversion </h3>
+cygwin の setup.exe でインストール。<br />
+いつのまにか、~/.subversion/ ができている。<br />
+/.subversion/ 以下のファイルでいろいろ設定できるので、要チェック。<br />
+参考: <a href="http://subversion.bluegate.org/doc/book.html#svn.advanced.confarea.opts">http://subversion.bluegate.org/doc/book.html#svn.advanced.confarea.opts</a> <br />
+<br />
+今回は、とりあえず、日本語でログ書けるように設定した。<br />
+<textarea name="code" class="ruby" cols="50" rows="6">
+[miscellany]
+log-encoding = UTF-8
+enable-auto-props = yes
+
+[auto-props]
+* = svn:eol-style=CRLF
+</textarea><br />
+このあと、emacs の設定で utf-8-dos をデフォルトにするので、これで良い。<br />
+<br />
+ついでに、locale も UTF-8 に合わせないと端末でログなどの表示が化ける。<br />
+<textarea name="code" class="ruby" cols="50" rows="7">
+# ja_JP.utf8 とか、それっぽいのを探す。
+locale -a | grep jp;
+# .bash_profile に以下を追加、または修正。
+export LC_ALL=ja_JP.utf8;
+export LANG=ja_JP.utf8;
+# 反映。
+source .bash_profile;
+</textarea><br />
+<br />
+svnadmin, svn のメモ:<br />
+<textarea name="code" class="ruby" cols="50" rows="30">
+cd /home/master/;
+mkdir -p ./svn_test/work/;
+
+# レポジトリを作る。
+svnadmin create \
+--config-dir ~/.subversion/ \
+--fs-type fsfs \
+/home/master/svn_test/REPOSITORY/;
+
+# /path/to/source/ からレポジトリへインポート。
+svn import \
+--config-dir ~/.subversion/ \
+--message 'start' \
+/path/to/source/ \
+file:///home/master/svn_test/REPOSITORY/;
+
+# レポジトリから作業コピーへチェックアウト。
+svn checkout \
+--config-dir ~/.subversion/ \
+--revision 'HEAD' \
+file:///home/master/svn_test/REPOSITORY/ \
+/home/master/svn_test/work/;
+
+# 困ったら…
+svnadmin help;
+svn help;
+</textarea><br />
+<br />
+<h3>◆ emacs の日本語の扱いを調整</h3>
+久しぶりに、 .emacs を整理した。<br />
+meadow なので、sjis-dos デフォルトで無問題だったんだけど、<br />
+Subversion は UTF-8 前提だし、まー今後の事も考えて、<br />
+utf-8-dos をデフォルトに変更した。<br />
+(ただし Windows なら、入力と出力だけは、japanese-shift-jis-dos ですよと)<br />
+<br />
+以下、日本語環境部分を .emacs より抜粋。<br />
+<textarea name="code" class="xml" cols="50" rows="50">
+;;;;;;;;;;;;;;;;;;;;;;
+;;; 日本語環境設定 ;;;
+;;;;;;;;;;;;;;;;;;;;;;
+(load "un-define");; unicode
+(load "un-tools");; unicode
+(load "jisx0213");; unicode
+;;; ↑これらを↓これより先に書く。
+(set-language-environment "Japanese")
+(prefer-coding-system 'utf-8-dos)
+;;;
+;;; 言語環境を日本語にすると Meadow は自動的に次のように設定するらしい。
+;;; (set-clipboard-coding-system 'japanese-shift-jis-dos)
+;;; (set-w32-system-coding-system 'japanese-shift-jis-dos)
+;;; (setq default-file-name-coding-system 'japanese-shift-jis)
+;;; (set-default-coding-systems 'japanese-shift-jis-dos)
+;;;
+;;; さらに、set-default-coding-systems で次のように設定される。
+;;; (setq-default buffer-file-coding-system 'japanese-shift-jis-dos)
+;;; (setq default-file-name-coding-system 'japanese-shift-jis-dos)
+;;; (setq default-terminal-coding-system 'japanese-shift-jis-dos)
+;;; (setq default-keyboard-coding-system 'japanese-shift-jis-dos)
+;;; (setq default-process-coding-system '(japanese-shift-jis-dos . japanese-shift-jis-dos))
+;;;
+
+(set-default-coding-systems 'utf-8-dos)                      ;; default
+;;; (set-keyboard-coding-system 'japanese-shift-jis-dos)         ;; IN
+;;; (set-terminal-coding-system 'japanese-shift-jis-dos)         ;; OUT
+(setq default-keyboard-coding-system 'japanese-shift-jis-dos);; IN    (default)
+(setq default-terminal-coding-system 'japanese-shift-jis-dos);; OUT   (default)
+(setq default-buffer-file-coding-system 'utf-8-dos)          ;; buffer(default)
+;;; (setq-default buffer-file-coding-system 'utf-8-dos)          ;; buffer(default)
+
+(set-w32-system-coding-system 'japanese-shift-jis-dos)
+(set-clipboard-coding-system 'japanese-shift-jis-dos)
+(setq default-file-name-coding-system 'japanese-shift-jis)
+(setq default-process-coding-system '(utf-8-dos . utf-8-dos))
+
+(mw32-ime-initialize)
+(setq default-input-method "MW32-IME")
+</textarea><br />
+<br />
+しかし、<br />
+(setq default-buffer-file-coding-system '...)<br />
+とか、<br />
+(setq-default buffer-file-coding-system '...)<br />
+とか、<br />
+(set-default-buffer-file-coding-system '...)<br />
+とか、紛らわしいので勘弁して欲しい。<br />
+<br />
+ちなみに、<br />
+「PuTTY 上の emacs」と meadow のモードラインの違いを、始めてちゃんと見た。<br />
+<blockquote>
+…文字端末を使っている場合、csは3文字になり、それぞれ、<br />
+キーボード入力のコーディングシステム、<br />
+画面出力のコーディングシステム、<br />
+編集中のファイルのコーディングシステムです。<br />
+</blockquote>
+、だそうです。<br />
+参考: <a href="http://www.bookshelf.jp/texi/emacs-20.6-man-jp/emacs_4.html#SEC11">http://www.bookshelf.jp/texi/emacs-20.6-man-jp/emacs_4.html#SEC11
+</a><br />
+このおかげで、<br />
+<ul>
+<li>keyboard-coding-system</li>
+<li>terminal-coding-system</li>
+<li>buffer-file-coding-system</li>
+</ul>
+という 3 つのパラメータを意識したら気のせいかスッキリした。<br />
+<br />
+あと、何となく Customize とかで設定しちゃってた部分とバッティングして苦労した。<br />
+<br />
+<h3>◆ vc-svn </h3>
+vc-svn を入手。Subversion のソースツリーの中の、/contrib/client-side/vc-svn.el です。<br />
+vc は標準でバンドルされてるので、vc-svn.el を load-path に置いて、
+<textarea name="code" class="xml" cols="50" rows="1">
+(add-to-list 'vc-handled-backends 'SVN)
+</textarea><br />
+って書くだけで良い。<br />
+<br />
+以降、 vc 経由で cygwin の svn が呼ばれる。<br />
+<br />
+vc のメモ:<br />
+参考: <a href="http://www.bookshelf.jp/texi/emacs-20.6-man-jp/emacs_15.html#SEC118">http://www.bookshelf.jp/texi/emacs-20.6-man-jp/emacs_15.html#SEC118</a><br /> 
+チェックアウト、チェックイン、追加は、<br />
+<textarea name="code" class="xml" cols="50" rows="1">
+C-x v v
+</textarea><br />
+コレだけ(!)で済む。<br />
+衝突したら、vc-merge( C-x vm ), vc-resolve-conflicts とかするんだと思う(あとで試す)。<br />
+困ったら、<br />
+<textarea name="code" class="xml" cols="50" rows="2">
+C-h a (or M-x apropos-command)
+vc-(Enter)
+</textarea><br />
+で、調べる。<br />
+<br />
+<h3>◆ linux とかではどうなの?</h3>
+emacs の設定さえ頑張れば、linux でも問題ない(ように見える)。<br />
+<br />
+<h3>◆宿題</h3>
+<ul>
+  <li> vc で削除ってどうやるの?</li>
+  <li>
+    M-x ediff-revision
+    で差分が見れるけど、<br />
+    vc-merge, vc-resolve-conflicts<br /> 
+    と、どう絡んでくれるか?<br />
+    上手く絡んで欲しい。ediff 最強。
+  </li>
+  <li>
+    ログの書き込みは問題ないが、<br />
+    locale を UTF-8 に合わせないと表示が化ける。<br />
+    だけど、cygwin の locale は腐っている。ﾀｽｹﾃ。
+  </li>
+  <li>
+    実は TortoiseSVN も入れているんだけど、<br />
+    cygwin のパスが Windows 的に素直じゃないので、<br />
+    共有とか難しいんだろうか?<br />
+    それ以前の問題として、Subversion のバージョンが違うので、<br />
+    レポジトリとかのフォーマットが互換性が無い模様。しばらく様子見。
+  </li>
+</ul>
+                           </div>
+                                        
+                                                      <div class="entry-tags">
+                               <h4 class="entry-tags-header">タグ:</h4> 
+                               <ul class="entry-tags-list">
+                                                                          <li class="entry-tag"><a href="https://tonextone.com/type/app/mt-search.cgi?tag=emacs&amp;blog_id=1" rel="tag">emacs</a></li>
+                                                                          <li class="entry-tag"><a href="https://tonextone.com/type/app/mt-search.cgi?tag=svn&amp;blog_id=1" rel="tag">svn</a></li>
+                                                                          <li class="entry-tag"><a href="https://tonextone.com/type/app/mt-search.cgi?tag=versioning&amp;blog_id=1" rel="tag">versioning</a></li>
+                                                                          <li class="entry-tag"><a href="https://tonextone.com/type/app/mt-search.cgi?tag=%E6%96%87%E5%AD%97%E3%82%B3%E3%83%BC%E3%83%89&amp;blog_id=1" rel="tag">文字コード</a></li>
+                                   
+                               </ul>
+                           </div>
+                           
+                        </div>
+                        <p class="entry-footer">
+                           <span class="post-footers">
+                                                                  日時: 2006&#24180;11&#26376;16&#26085; 17:08
+                               
+                           </span> 
+                           <span class="separator">|</span> <a class="permalink" href="https://tonextone.com/type/2006/11/16-1708.html">パーマリンク</a>
+                        </p>
+                     </div>
+
+                                          <div class="trackbacks">
+                        <h3 id="trackback" class="trackbacks-header">トラックバック</h3>
+                        <div id="trackbacks-info">
+                           <p>このエントリーのトラックバックURL: <br />https://tonextone.com/type/app/mt-tb.cgi/7</p>
+                        </div>
+                                                                                 <div class="trackbacks-content">
+                              <p>この一覧は、次のエントリーを参照しています:  <a href="https://tonextone.com/type/2006/11/16-1708.html" rel="nofollow">svn 入門</a>:</p>
+                           
+                           <a id="p10152"></a>
+                           <div class="trackback" id="ping-10152">
+                              <div class="trackback-content">
+                                 <p>
+                                    &raquo; <a href="http://backcountry.xrea.jp/pukiwiki/index.php?Subversion" rel="nofollow nofollow">Subversion</a> 送信元 yamaGu's PukiWiki Plus! (PukiWiki/TrackBack 0.3)<br />
+                                    svnadmin create /var/svn/repos svn import -m 'start' /home/yamagu/matlab/sim ... <a href="http://backcountry.xrea.jp/pukiwiki/index.php?Subversion" rel="nofollow nofollow">[詳しくはこちら]</a>
+                                 </p>
+                              </div>
+                              <p class="trackback-footer">
+                                 トラックバック時刻:  <a href="#ping-10152" rel="nofollow">2007&#24180;09&#26376;17&#26085; 09:19</a>
+                              </p>
+                           </div>
+                                                         </div>
+                           
+                        
+                     </div>
+                     
+
+                                          <div id="comments" class="comments">
+                                                                                 <div class="comments-content">
+                                 <h3 class="comments-header">コメント (4)</h3>
+                           
+                                 <a id="c000008"></a>
+                                 <div class="comment" id="comment-8">
+                                    <div class="comment-inner">
+                                       <div class="comment-header">
+                                       </div>
+                                       <div class="comment-content">
+                                          <p>衝突がある場合、vc-merge( C-x v m )とすると、</p>
+
+<p>Lorem ipsum dolor sit amet,<br />
+consectetur adipisicing elit,<br />
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; .mine<br />
+変更したい<br />
+=======<br />
+でも、かぶった<br />
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; .r4<br />
+sed do eiusmod tempor incididunt<br />
+ut labore et dolore magna aliqua.</p>
+
+<p>となる。</p>
+
+<p>そのまま meadow を終了して、再度そのファイルを開くと、</p>
+
+<p>Lorem ipsum dolor sit amet,^M<br />
+consectetur adipisicing elit,^M<br />
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; .mine<br />
+変更したい^M<br />
+=======<br />
+でも、かぶった^M<br />
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; .r4<br />
+sed do eiusmod tempor incididunt^M <br />
+ut labore et dolore magna aliqua.^M</p>
+
+<p>となってしまう。</p>
+
+<p>どうも、cygwin 版 svn は、<br />
+「&lt;&lt;&lt;&lt;&lt;&lt;&lt; .mine」とか挿入した行の、改行コードの扱いが苦手のようだ。</p>
+
+<p><a href="http://rogiken.org/wiki/index.php?Subversion%A4%CE%C6%B3%C6%FE%A4%C8%BB%C8%CD%D1#content_1_9" rel="nofollow">http://rogiken.org/wiki/index.php?Subversion%A4%CE%C6%B3%C6%FE%A4%C8%BB%C8%CD%D1#content_1_9</a></p>
+
+<p>しばらくは、TortoiseSVN のバージョンも 1.3.2 に下げて、<br />
+不備を補いながらへ併用しようかな。</p>
+                                       </div>
+                                       <p class="comment-footer">
+                                          投稿者:
+                                          master  |
+                                          <a href="#comment-8">2006&#24180;11&#26376;17&#26085; 00:47</a>
+                                       </p>
+                                    </div>
+                                 </div>
+                           
+                                                   
+                                 <a id="c000009"></a>
+                                 <div class="comment" id="comment-9">
+                                    <div class="comment-inner">
+                                       <div class="comment-header">
+                                       </div>
+                                       <div class="comment-content">
+                                          <p>衝突の解消がどうにも VC のマニュアルどおりにならないので、</p>
+
+<p>・meadow 3.00-dev (based on GNU Emacs 22.0.90.1)<br />
+・vc-svn.el (FSF 版)</p>
+
+<p>も試用中。</p>
+
+<p>こっちの構成だとマニュアルどおり ediff が援用される。<br />
+そろそろ meadow3 に乗り換えても良いかも知れない。</p>
+
+<p>あと、VC で削除は、<br />
+M-x vc-delete-file<br />
+でいける？</p>
+
+<p>後でまとめて、エントリする。</p>
+                                       </div>
+                                       <p class="comment-footer">
+                                          投稿者:
+                                          master  |
+                                          <a href="#comment-9">2006&#24180;11&#26376;28&#26085; 01:15</a>
+                                       </p>
+                                    </div>
+                                 </div>
+                           
+                                                   
+                                 <a id="c000012"></a>
+                                 <div class="comment" id="comment-12">
+                                    <div class="comment-inner">
+                                       <div class="comment-header">
+                                       </div>
+                                       <div class="comment-content">
+                                          <p>ちなみに、cvs のメモ:</p>
+
+<p>cd /home/master/;<br />
+mkdir -p ./cvs_test/work/;</p>
+
+<p># レポジトリを作る。<br />
+setenv CVSROOT ':local:/home/master/cvs_test/REPOSITORY/';<br />
+cvs init;</p>
+
+<p># /path/to/source/ からレポジトリへインポート。<br />
+cd /path/to/source/;<br />
+cvs import -m 'start' module vendor release;</p>
+
+<p># レポジトリから作業コピーへチェックアウト。<br />
+cd /home/master/cvs_test/work/;<br />
+cvs checkout module;</p>
+
+<p># 困ったら…<br />
+cvs -H;<br />
+</p>
+                                       </div>
+                                       <p class="comment-footer">
+                                          投稿者:
+                                          master  |
+                                          <a href="#comment-12">2006&#24180;12&#26376;17&#26085; 00:19</a>
+                                       </p>
+                                    </div>
+                                 </div>
+                           
+                                                   
+                                 <a id="c000029"></a>
+                                 <div class="comment" id="comment-29">
+                                    <div class="comment-inner">
+                                       <div class="comment-header">
+                                       </div>
+                                       <div class="comment-content">
+                                          <p>[既存のディレクトリ]を svn 管理下に置きたい場合:</p>
+
+<p>$ svn mkdir [レポジトリ上のディレクトリのURL];<br />
+$ svn checkout [レポジトリ上のディレクトリのURL] [作業コピーディレクトリのパス];</p>
+
+<p>[既存のディレクトリ]から、[作業コピーディレクトリ]に、ファイルを移動。</p>
+
+<p>$svn add foo;</p>
+
+<p>念のため[作業コピーディレクトリ]でテスト。問題なければ、</p>
+
+<p>$svn commit;</p>
+                                       </div>
+                                       <p class="comment-footer">
+                                          投稿者:
+                                          <a href="https://tonextone.com/" rel="nofollow">master</a>  |
+                                          <a href="#comment-29">2007&#24180;03&#26376;19&#26085; 21:03</a>
+                                       </p>
+                                    </div>
+                                 </div>
+                                                         </div>
+                           
+                        
+
+                         
+                        <form method="post" action="https://tonextone.com/type/app/mt-comments.cgi" name="comments_form" onsubmit="if (this.bakecookie.checked) rememberMe(this)">
+                           <input type="hidden" name="static" value="1" />
+                           <input type="hidden" name="entry_id" value="7" />
+                           
+                           <div class="comments-open" id="comments-open">
+                              <h2 class="comments-open-header">コメントを投稿</h2>
+                              
+                              <div class="comments-open-content">
+                                 <script type="text/javascript">
+                                 <!--
+                                 writeTypeKeyGreeting(commenter_name, 7);
+                                 //-->
+                                 </script>
+                              
+                                                                  <p class="comments-open-moderated">
+                                    (いままで、ここでコメントしたことがないときは、コメントを表示する前にこのブログのオーナーの承認が必要になることがあります。承認されるまではコメントは表示されません。そのときはしばらく待ってください。)
+                                 </p>
+                                 
+
+                                 <div id="comments-open-data">
+                                    <div id="name-email">
+                                       <p>
+                                          <label for="comment-author">名前:</label>
+                                          <input id="comment-author" name="author" size="30" />
+                                       </p>
+                                       <p>
+                                          <label for="comment-email">メールアドレス:</label>
+                                          <input id="comment-email" name="email" size="30" />
+                                       </p>
+                                    </div>
+
+                                    <p>
+                                       <label for="comment-url">URL:</label>
+                                       <input id="comment-url" name="url" size="30" />
+                                    </p>
+                                    <p>
+                                       <label for="comment-bake-cookie"><input type="checkbox"
+                                          id="comment-bake-cookie" name="bakecookie" onclick="if (!this.checked) forgetMe(document.comments_form)" value="1" />
+                                          この情報を登録しますか?</label>
+                                    </p>
+                                 </div>
+
+                                 <p id="comments-open-text">
+                                    <label for="comment-text">コメント: (スタイル用のHTMLタグが使えます)</label>
+                                    <textarea id="comment-text" name="text" rows="15" cols="50"></textarea>
+                                 </p>
+                                 <div id="comments-open-footer" class="comments-open-footer">
+                                    <input type="submit" accesskey="v" name="preview" id="comment-preview" value="確認" />
+                                    <input type="submit" accesskey="s" name="post" id="comment-post" value="投稿" />
+                                 </div>
+                              </div>
+                           </div>
+                        </form>
+                        
+                     </div>
+                     
+                  </div>
+               </div>
+               <div id="beta">
+                  <div id="beta-inner" class="pkg">
+
+<div class="module-archives module">
+   <h2 class="module-header">最近のエントリー</h2>
+   <div class="module-content">
+      
+               &raquo; <a href="https://tonextone.com/type/2010/06/20-0028.html">Google Documents List Data API v3.0 を python から利用してみた。</a><br />
+               &raquo; <a href="https://tonextone.com/type/2009/04/18-1635.html">OpenLink iSPARQL で DBpedia をみる。</a><br />
+               &raquo; <a href="https://tonextone.com/type/2009/04/04-1939.html">ウェブサイトのイメージを共有するためのツール</a><br />
+               &raquo; <a href="https://tonextone.com/type/2009/03/08-1727.html">Jester is ActiveResource client lib. for Javascript.</a><br />
+               &raquo; <a href="https://tonextone.com/type/2009/01/31-1655.html">FreeBSD リモートアップデート 5.4-RELEASE => 6.4-RELEASE</a><br />
+               &raquo; <a href="https://tonextone.com/type/2008/11/29-1311.html">店舗情報の版管理 (skypefind の場合)</a><br />
+               &raquo; <a href="https://tonextone.com/type/2008/10/05-1616.html">The Art of SQL「10 章 戦力の結集」「11章 計略」から読み取ったこと。</a><br />
+               &raquo; <a href="https://tonextone.com/type/2008/09/15-2320.html">The Art of SQL「4 章 策略」から読み取ったこと。</a><br />
+               &raquo; <a href="https://tonextone.com/type/2008/07/18-0038.html">Re: Emacs の moccur-grep-find で特定のファイルを無視したい</a><br />
+               &raquo; <a href="https://tonextone.com/type/2008/04/29-1734.html">セマンティックウェブ設計 5 原則</a><br />
+      
+   </div>
+</div>
+<div class="module-recent-comments module">
+   <h2 class="module-header">最近のコメント</h2>
+   <div class="module-content">
+   &raquo; 
+   <a href="https://tonextone.com/type/2006/11/16-1708.html#comment-29">
+      master on svn 入門
+   </a>:<br />
+   └ [既存のディレクトリ...<br />
+   &raquo; 
+   <a href="https://tonextone.com/type/2006/11/16-1708.html#comment-12">
+      master on svn 入門
+   </a>:<br />
+   └ ちなみに、cvs の...<br />
+   &raquo; 
+   <a href="https://tonextone.com/type/2006/11/16-1708.html#comment-9">
+      master on svn 入門
+   </a>:<br />
+   └ 衝突の解消がどうにも...<br />
+   &raquo; 
+   <a href="https://tonextone.com/type/2006/11/16-1708.html#comment-8">
+      master on svn 入門
+   </a>:<br />
+   └ 衝突がある場合、vc...<br />
+
+  </div>
+</div>
+<div class="module-categories module">
+   <h2 class="module-header">カテゴリー</h2>
+   <div class="module-content">
+         <!-- ul class="module-list" --><ul>
+                     <!-- li class="module-list-item" -->
+         <li>
+            <a href="https://tonextone.com/type/think/" title="">おもう</a>
+      
+      
+      
+         </li>
+      
+      
+         
+                     <!-- li class="module-list-item" -->
+         <li>
+            <a href="https://tonextone.com/type/create/" title="">つくる</a>
+      
+      
+      
+         </li>
+      
+      
+         
+                     <!-- li class="module-list-item" -->
+         <li>
+            <a href="https://tonextone.com/type/manage/" title="">やりくりする</a>
+      
+      
+      
+         </li>
+      
+      </ul>
+   
+   </div>
+</div>
+
+<div class="module-tagcloud module">
+   <h2 class="module-header">タグ クラウド</h2>
+   <div class="module-content">
+      
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=Perl&amp;blog_id=1">Perl(1)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=VMware&amp;blog_id=1">VMware(1)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel3">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=ajax&amp;blog_id=1">ajax(3)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=api&amp;blog_id=1">api(1)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel2">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=architecture&amp;blog_id=1">architecture(5)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=coLinux&amp;blog_id=1">coLinux(1)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel3">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=emacs&amp;blog_id=1">emacs(3)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=google&amp;blog_id=1">google(1)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel1">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=javascript&amp;blog_id=1">javascript(6)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel3">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=movabletype&amp;blog_id=1">movabletype(3)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel3">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=presentation&amp;blog_id=1">presentation(3)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=python&amp;blog_id=1">python(1)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=security&amp;blog_id=1">security(1)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=session&amp;blog_id=1">session(1)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel5">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=social&amp;blog_id=1">social(2)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel5">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=sql&amp;blog_id=1">sql(2)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel5">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=svn&amp;blog_id=1">svn(2)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel3">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=userinterface&amp;blog_id=1">userinterface(4)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel5">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=versioning&amp;blog_id=1">versioning(2)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=%E6%96%87%E5%AD%97%E3%82%B3%E3%83%BC%E3%83%89&amp;blog_id=1">文字コード(1)&nbsp;&nbsp;</a>
+         <span>
+               <span class="taglevel6">
+            <a href="https://tonextone.com/type/app/mt-search.cgi?tag=%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83&amp;blog_id=1">開発環境(1)&nbsp;&nbsp;</a>
+         <span>
+      
+   </div>
+</div><div class="module-archives module" id="monthly-archives">
+   <h2 class="module-header"><a href="https://tonextone.com/type/weblog/">アーカイブ</a></h2>
+   <div class="module-content">
+      <select onchange="nav(this)">
+         <option>月を選択</option>
+                  <option value="https://tonextone.com/type/2010/06/">2010&#24180;06&#26376;</option>
+                  <option value="https://tonextone.com/type/2009/04/">2009&#24180;04&#26376;</option>
+                  <option value="https://tonextone.com/type/2009/03/">2009&#24180;03&#26376;</option>
+                  <option value="https://tonextone.com/type/2009/01/">2009&#24180;01&#26376;</option>
+                  <option value="https://tonextone.com/type/2008/11/">2008&#24180;11&#26376;</option>
+                  <option value="https://tonextone.com/type/2008/10/">2008&#24180;10&#26376;</option>
+                  <option value="https://tonextone.com/type/2008/09/">2008&#24180;09&#26376;</option>
+                  <option value="https://tonextone.com/type/2008/07/">2008&#24180;07&#26376;</option>
+                  <option value="https://tonextone.com/type/2008/04/">2008&#24180;04&#26376;</option>
+                  <option value="https://tonextone.com/type/2008/03/">2008&#24180;03&#26376;</option>
+                  <option value="https://tonextone.com/type/2008/01/">2008&#24180;01&#26376;</option>
+                  <option value="https://tonextone.com/type/2007/10/">2007&#24180;10&#26376;</option>
+                  <option value="https://tonextone.com/type/2007/09/">2007&#24180;09&#26376;</option>
+                  <option value="https://tonextone.com/type/2007/08/">2007&#24180;08&#26376;</option>
+                  <option value="https://tonextone.com/type/2007/03/">2007&#24180;03&#26376;</option>
+                  <option value="https://tonextone.com/type/2006/12/">2006&#24180;12&#26376;</option>
+                  <option value="https://tonextone.com/type/2006/11/">2006&#24180;11&#26376;</option>
+                  <option value="https://tonextone.com/type/2006/10/">2006&#24180;10&#26376;</option>
+                  <option value="https://tonextone.com/type/2006/09/">2006&#24180;09&#26376;</option>
+                  <option value="https://tonextone.com/type/2006/08/">2006&#24180;08&#26376;</option>
+         
+      </select>
+   </div>
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+function nav(sel) {
+   if (sel.selectedIndex == -1) return;
+   var opt = sel.options[sel.selectedIndex];
+   if (opt && opt.value)
+      location.href = opt.value;
+}    
+</script>
+<div class="module-search module">
+   <h2 class="module-header">検索</h2>
+   <div class="module-content">
+      <form method="get" action="https://tonextone.com/type/app/mt-search.cgi">
+         <input type="hidden" name="IncludeBlogs" value="1" />
+         <label for="search" accesskey="4">ブログを検索: </label><br />
+         <input id="search" name="search" size="20" />
+         <input type="submit" value="検索" />
+      </form>
+   </div>
+</div>
+<div class="module-syndicate module">
+   <h2 class="module-header">フィード</h2>
+   <div class="module-content">
+
+      <h3>このブログ</h3>
+<!--
+      <a href="https://tonextone.com/type/index.rdf">
+         RSS 1.0
+      </a> 
+      /
+-->
+      <a href="https://tonextone.com/type/index.xml">
+         RSS 2.0
+      </a>
+      /
+      <a href="https://tonextone.com/type/atom.xml">
+         ATOM
+      </a>
+
+
+
+   </div>
+
+</div>
+<div class="module-archives module">
+   <h2 class="module-header">
+      AdSense
+   </h2>
+   <div class="module-content">
+<script type="text/javascript"><!--
+google_ad_client = "pub-1914778898056884";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+google_ad_channel = "";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_text = "000000";
+google_color_url = "008000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+   </div>
+</div>
+
+<div class="module-archives module">
+   <h2 class="module-header">
+      <a href="http://del.icio.us/tonextone/">del.icio.us</a>
+   </h2>
+<style>
+.delicious-posts { margin: 0; border: 0; padding: 0; width: 180px; font-family: sans-serif; }
+.delicious-posts ul, .delicious-posts li, .delicious-banner { margin: 0; padding: 0}
+.delicious-post { border-top: 1px solid #eee; padding: 0.2em; font-size: 80% }
+.delicious-odd { background-color: #f8f8f8 }
+.delicious-banner a { font-size: 80% }
+.delicious-posts a:hover { text-decoration: underline }
+.delicious-posts a { text-decoration: none; color: #a15426; display: block; padding: 0.2em }
+.delicious-post a { color: #04a1ff }
+</style>
+   <div class="module-content">
+      <script type="text/javascript" 
+       src="http://del.icio.us/feeds/js/tonextone?count=10;"></script>
+      <script type="text/javascript" src="http://del.icio.us/feeds/js/tags/tonextone?sort=freq;totals;size=10-14;color=87ceeb-0000ff"></script>
+      <noscript><a href="http://del.icio.us/tonextone">del.icio.us</a></noscript>
+   </div>
+</div>
+<div class="module-archives module">
+   <h2 class="module-header">
+      <a href="http://www.flickr.com/photos/tonextone/">flickr</a>
+   </h2>
+   <div class="module-content">
+<!-- Start of Flickr Badge -->
+<style>.flickr_badge_image { display: inline; margin: 0px; }</style>
+<script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=10&display=latest&size=s&layout=x&source=user&user=11342253%40N00"></script>
+<!-- End of Flickr Badge -->
+   </div>
+</div><div class="module-archives module">
+   <h2 class="module-header">
+      <a href="http://www.last.fm/user/tonextone/">last.fm</a>
+   </h2>
+   <div class="module-content">
+      <a href="http://www.last.fm/user/tonextone/?chartstyle=cwal">
+         <img src="http://imagegen.last.fm/cwal/tracks/tonextone.gif" border="0" />
+      </a>
+<!--
+<a href="http://www.last.fm/user/tonextone/?chartstyle=penicillin3">
+<img src="http://imagegen.last.fm/penicillin3/tracks/tonextone.gif" border="0" />
+</a>
+<a href="http://www.last.fm/user/tonextone/?chartstyle=lb3">
+<img src="http://imagegen.last.fm/lb3/tracks/tonextone.gif" border="0" />
+</a>
+-->
+   </div>
+</div>
+<div class="module-archives module">
+   <h2 class="module-header">
+      <a href="http://kanshin.com/">Kanshin</a>
+   </h2>
+   <div class="module-content">
+<script type="text/javascript" charset="utf-8" src="http://static.kanshin.com/blogparts/keyword_user.js?user=10662&color=green&layout=w150"></script>
+<noscript><a href="http://www.kanshin.com/user/10662">関心空間</a></noscript>
+   </div>
+</div><div class="module-archives module">
+   <h2 class="module-header">
+      <a href="http://www.flipclip.net/clips/tonextone/favorites/">flipclip.net</a>
+   </h2>
+   <div class="module-content">
+      <script type="text/javascript"
+       src="http://www.flipclip.net/js/favorite_clips/tonextone"></script>
+   </div>
+</div><!--
+<a href="http://b.hatena.ne.jp/entrylist?url=https://tonextone.com/">
+<img src="http://b.hatena.ne.jp/bc/https://tonextone.com/" 
+     class="bcounter" alt="この日記のはてなブックマーク数" title="この日記のはてなブックマーク数">
+</a>
+-->
+<script type="text/javascript" src="http://embed.technorati.com/embed/6ddzeq69p.js"></script>
+<div class="module-powered module">
+   <div class="module-content">
+      Powered by<br /><a href="http://www.sixapart.jp/movabletype/">Movable Type 3.32-ja</a>
+   </div>
+</div>
+
+
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+
+<script type="text/javascript" src="https://tonextone.com/hack/dp.SyntaxHighlighter/Scripts/shCore.js"></script>
+<script type="text/javascript" src="https://tonextone.com/hack/dp.SyntaxHighlighter/Scripts/shBrushXml.js"></script>
+<script type="text/javascript" src="https://tonextone.com/hack/dp.SyntaxHighlighter/Scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="https://tonextone.com/hack/dp.SyntaxHighlighter/Scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="https://tonextone.com/hack/dp.SyntaxHighlighter/Scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="https://tonextone.com/hack/dp.SyntaxHighlighter/Scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="https://tonextone.com/hack/dp.SyntaxHighlighter/Scripts/shBrushRuby.js"></script>
+<script type="text/javascript" src="https://tonextone.com/hack/dp.SyntaxHighlighter/Scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="https://tonextone.com/hack/dp.SyntaxHighlighter/Scripts/shBrushSql.js"></script>
+<script language="javascript">
+  window.onload=function(){dp.SyntaxHighlighter.HighlightAll('code');};
+</script>
+
+</html>

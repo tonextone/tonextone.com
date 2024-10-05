@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+   <channel>
+      <title>tonextone.com/type/</title>
+      <link>https://tonextone.com/type/</link>
+      <description></description>
+      <language>ja</language>
+      <copyright>Copyright 2010</copyright>
+      <lastBuildDate>Sun, 20 Jun 2010 00:28:09 +0900</lastBuildDate>
+      <generator>http://www.sixapart.com/movabletype/</generator>
+      <docs>http://blogs.law.harvard.edu/tech/rss</docs> 
+
+            <item>
+         <title>Google Documents List Data API v3.0 を python から利用してみた。</title>
+         <description><![CDATA[今更ながら、地味に便利なんじゃないかと思って試してみたら...<br />
+
+<textarea name="code" class="python" cols="50" rows="50">
+>>> from gdata.docs.service import DocsService
+>>>
+>>> client = DocsService()
+>>>
+>>> # ログイン
+>>> client.ClientLogin('FOO@gmail.com', 'xxxxxxx')
+>>>
+>>> from gdata.data import MediaSource
+>>>
+>>> # ドキュメントを作成
+>>> test = MediaSource(file_path='./test.html', content_type='text/html')
+>>>
+>>> # アップロード
+>>> entry = client.Upload(test, 'UploadFromAPI')
+>>> print entry.GetAlternateLink().href
+https://docs.google.com/Doc?docid=0ATO54PaP2eGQZGd0bXprZDZfNTkxZnpocjJ2eGc&hl=en
+>>>
+>>> # MS Word でエクスポート
+>>> out_path = './test.doc'
+>>> client.Export(entry, out_path)
+>>>
+>>> # PDF でエクスポート
+>>> out_path = './test.pdf'
+>>> client.Export(entry, out_path)
+>>>
+</textarea>
+<br />
+...すごい。<br />
+
+Google Docs と統合されたアプリを作ったり、単に HTML -> PDF などの変換に使えますね。
+
+<ul>
+<li><a href="http://code.google.com/apis/documents/docs/3.0/developers_guide_python.html#DownloadingDocs" >Python Language Guide (v3.0)</a></li>
+<li><a href="http://code.google.com/apis/gdata/articles/python_client_lib.html">Getting Started with the Google Data Python Library</a></li>
+</ul>
+]]></description>
+         <link>https://tonextone.com/type/2010/06/20-0028.html</link>
+         <guid>https://tonextone.com/type/2010/06/20-0028.html</guid>
+                  <category domain="http://www.sixapart.com/ns/types#category">おもう</category>
+                  <category domain="http://www.sixapart.com/ns/types#category">つくる</category>
+                  <category domain="http://www.sixapart.com/ns/types#category">やりくりする</category>
+        
+                  <category domain="http://www.sixapart.com/ns/types#tag">api</category>
+                  <category domain="http://www.sixapart.com/ns/types#tag">google</category>
+                  <category domain="http://www.sixapart.com/ns/types#tag">python</category>
+        
+         <pubDate>Sun, 20 Jun 2010 00:28:09 +0900</pubDate>
+      </item>
+            <item>
+         <title>ウェブサイトのイメージを共有するためのツール</title>
+         <description><![CDATA[職場で、これから作成するウェブサイトのワイヤーフレーム + サイトマップを作りたくなって、いろいろ調べた際のメモ。<br />
+<br />
+
+<h4>ワイヤーフレーム</h4>
+
+<a href="http://www.evolus.vn/Pencil/" target="_blank">pencil</a>は、ワイヤーフレームというには、ちょっと具体的過ぎる感じ。<br />
+結局、ER図作成でお世話になっている <a href="http://gliffy.com/" target="_blank">gliffy</a> を選択した。<br />
+<br />
+gliffy は、矩形選択してコピーとか移動とかすると、<br />
+操作対象の中のレイヤーの z-index が維持されなかったりグルーピングがおかしなことになったりするけれど、<br />
+そういうクセを許容させるくらい使い勝手が良い。<br />
+<br />
+また、今回の目的はイメージを共有することなので、<br />
+オンラインで共有できて、さらにコラボレーション(共同編集)できるのも良い。<br />
+<br />
+
+<h4>サイトマップ</h4>
+
+<a href="http://writemaps.com/" target="_blank">writemaps</a>は、見た目キレイで良いのだが、機能が足りないので、却下。<br />
+
+<a href="https://tonextone.com:8000/trac/wiki/memo/presentation" target="_blank">dot -> graphviz</a> も試したが、コラボレーションに向かないので、却下。<br />
+
+結局、マインドマップツールの、<a href="http://www.mindomo.com/view.htm?m=764849a370e24bc8b79705285d1d6e63" target="_blank">MINDOMO</a>を使ってみた。<br />
+
+<a href="http://www.serena.com/products/prototype-composer/" target="_blank">SERENA Prototype Composer</a> も気になったが、ちょっと高機能過ぎる気がするのと、Windows アプリなのでコラボレーション的な制限を感じたので、保留。<br />
+今から触ってみます。<br />
+
+<br />
+以上、とりあえずのメモ。
+]]></description>
+         <link>https://tonextone.com/type/2009/04/04-1939.html</link>
+         <guid>https://tonextone.com/type/2009/04/04-1939.html</guid>
+                  <category domain="http://www.sixapart.com/ns/types#category">おもう</category>
+                  <category domain="http://www.sixapart.com/ns/types#category">つくる</category>
+                  <category domain="http://www.sixapart.com/ns/types#category">やりくりする</category>
+        
+                  <category domain="http://www.sixapart.com/ns/types#tag">architecture</category>
+                  <category domain="http://www.sixapart.com/ns/types#tag">presentation</category>
+                  <category domain="http://www.sixapart.com/ns/types#tag">userinterface</category>
+        
+         <pubDate>Sat, 04 Apr 2009 19:39:44 +0900</pubDate>
+      </item>
+            <item>
+         <title>scripture</title>
+         <description><![CDATA[絵本を手軽に作りたいなぁと思い、作ってみた。 <br />
+<br />
+できたものは「お話」(イラストレーションと文章の混ざったもの)<br />
+を、そこそこ簡単に作れるシステム。<br />
+このシステムを、scripture (スクリプチャー)と呼んでおく。<br />
+FireFox と IE6以上で期待通りに動作した。<br />
+Opera, Safari では使えない(FCKeditor が動作しないので)。<br />
+<br />
+子供や大人に「お話」を聞かせる時に使えるかもしれない。<br />
+<br />
+「お話」サンプル:<br />
+<a href="http://scripture.tonextone.com/?generation=greeting2007">http://scripture.tonextone.com/?generation=greeting2007</a><br />
+<br />
+使い方:<br />
+<ol>
+<li>「お話を作る」でゴニョゴニョする</li>
+<li>「お話」が完成</li>
+<li>「このお話を読む」で閲覧用の URL へ移動</li>
+<li>「お話」のページの HTML ソースを保存</li>
+</ol>
+<br />
+使い捨てのシステム。<br />
+ネットにつながっていれば、保存した HTML ソースだけで動作するし、<br />
+つながってない状況で使いたかったら、HTML ソース読んで、<br />
+js とか css とか画像とか、必要な部品をダウンロードして、調整すればいい。<br />
+ちょっとガンバればできる。<br />
+<br />
+とりあえず、COOKIE でセッション貼っているので、<br />
+自分が作った「お話」(1つだけ)を、後から編集することは、<br />
+辛うじて、できるようにしてあるが、<br />
+認証などつけていない。<br />
+セッションが切れたら編集できない。これはひどい。]]></description>
+         <link>https://tonextone.com/type/2006/12/29-2200.html</link>
+         <guid>https://tonextone.com/type/2006/12/29-2200.html</guid>
+                  <category domain="http://www.sixapart.com/ns/types#category">つくる</category>
+        
+                  <category domain="http://www.sixapart.com/ns/types#tag">javascript</category>
+                  <category domain="http://www.sixapart.com/ns/types#tag">presentation</category>
+                  <category domain="http://www.sixapart.com/ns/types#tag">userinterface</category>
+        
+         <pubDate>Fri, 29 Dec 2006 22:00:00 +0900</pubDate>
+      </item>
+            <item>
+         <title>Panoramic Panel Perspective</title>
+         <description><![CDATA[私は怠惰なので、作業する時でも何でも、手の届く範囲に全てそろえておきたい。<br />
+コックピットが理想。<br />
+<img alt="cockpit.jpg" src="https://tonextone.com/type/cockpit.jpg" width="448" height="336" /><br />
+<br />
+今、座っているデスクの前と左には、本棚が接している。<br />
+前の本棚には、よく使う書類のフォルダが、4種類に分類されていて、<br />
+左の本棚には、よく使うリファレンス系の書籍がある。<br />
+(各本棚のデスクトップより下の領域は、普段使わないモノが収納されている。)<br />
+<br />
+そのデスクに、ノートPC を置いて、処理しなければならない書類を意識しながら作業し、<br />
+ちょっと「首を捻る」ようなことがあったら、首を「左に」捻って、リファレンスを手に取る。<br />
+<br />
+こういうユーザーインターフェイスが体になじむ場面は、多いと思う。<br />
+<br />
+でも、ウェブアプリケーションの場合、<br />
+扱っている対象に関連性のある、良く使うツールですら画面に収まりきらないことも多い。<br />
+特に web2.0 なマッシュアップなさービスでは、<br />
+アレコレ関連性を表現しつつ、それらをその場で編集する、みたいな、<br />
+優れた一覧性が重要な気がする。<br />
+<br />
+それならば…と、ちょっと考えてみた。<br />
+<a href="https://tonextone.com/neta/ppp/test.html" target="_blank">Panoramic Panel Perspective</a><br />
+要するに横スクロールなんですが、ちゃんと分類した上であれば、積極的に使うのもアリなのではないかと思う。<br />]]></description>
+         <link>https://tonextone.com/type/2006/12/11-1542.html</link>
+         <guid>https://tonextone.com/type/2006/12/11-1542.html</guid>
+                  <category domain="http://www.sixapart.com/ns/types#category">おもう</category>
+                  <category domain="http://www.sixapart.com/ns/types#category">つくる</category>
+        
+        
+         <pubDate>Mon, 11 Dec 2006 15:42:34 +0900</pubDate>
+      </item>
+      
+   </channel>
+</rss>

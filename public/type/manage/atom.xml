@@ -1,0 +1,1148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+   <title>tonextone.com/type/</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/" />
+   <link rel="self" type="application/atom+xml" href="https://tonextone.com/type/atom.xml" />
+   <id>tag:tonextone.com,2011:/type//1</id>
+   <updated>2010-06-20T00:19:23Z</updated>
+   
+   <generator uri="http://www.sixapart.com/movabletype/">Movable Type 3.32-ja</generator>
+
+<entry>
+   <title>Google Documents List Data API v3.0 を python から利用してみた。</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2010/06/20-0028.html" />
+   <id>tag:tonextone.com,2010:/type//1.32</id>
+   
+   <published>2010-06-19T15:28:09Z</published>
+   <updated>2010-06-20T00:19:23Z</updated>
+   
+   <summary>今更ながら、地味に便利なんじゃないかと思って試してみたら... &gt;&gt;&gt; from...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="おもう" scheme="http://www.sixapart.com/ns/types#category" />
+         <category term="つくる" scheme="http://www.sixapart.com/ns/types#category" />
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   <category term="24" label="api" scheme="http://www.sixapart.com/ns/types#tag" />
+   <category term="23" label="google" scheme="http://www.sixapart.com/ns/types#tag" />
+   <category term="22" label="python" scheme="http://www.sixapart.com/ns/types#tag" />
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[今更ながら、地味に便利なんじゃないかと思って試してみたら...<br />
+
+<textarea name="code" class="python" cols="50" rows="50">
+>>> from gdata.docs.service import DocsService
+>>>
+>>> client = DocsService()
+>>>
+>>> # ログイン
+>>> client.ClientLogin('FOO@gmail.com', 'xxxxxxx')
+>>>
+>>> from gdata.data import MediaSource
+>>>
+>>> # ドキュメントを作成
+>>> test = MediaSource(file_path='./test.html', content_type='text/html')
+>>>
+>>> # アップロード
+>>> entry = client.Upload(test, 'UploadFromAPI')
+>>> print entry.GetAlternateLink().href
+https://docs.google.com/Doc?docid=0ATO54PaP2eGQZGd0bXprZDZfNTkxZnpocjJ2eGc&hl=en
+>>>
+>>> # MS Word でエクスポート
+>>> out_path = './test.doc'
+>>> client.Export(entry, out_path)
+>>>
+>>> # PDF でエクスポート
+>>> out_path = './test.pdf'
+>>> client.Export(entry, out_path)
+>>>
+</textarea>
+<br />
+...すごい。<br />
+
+Google Docs と統合されたアプリを作ったり、単に HTML -> PDF などの変換に使えますね。
+
+<ul>
+<li><a href="http://code.google.com/apis/documents/docs/3.0/developers_guide_python.html#DownloadingDocs" >Python Language Guide (v3.0)</a></li>
+<li><a href="http://code.google.com/apis/gdata/articles/python_client_lib.html">Getting Started with the Google Data Python Library</a></li>
+</ul>
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>ウェブサイトのイメージを共有するためのツール</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2009/04/04-1939.html" />
+   <id>tag:tonextone.com,2009:/type//1.30</id>
+   
+   <published>2009-04-04T10:39:44Z</published>
+   <updated>2009-04-04T11:44:09Z</updated>
+   
+   <summary>職場で、これから作成するウェブサイトのワイヤーフレーム + サイトマップを作りた...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="おもう" scheme="http://www.sixapart.com/ns/types#category" />
+         <category term="つくる" scheme="http://www.sixapart.com/ns/types#category" />
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   <category term="17" label="architecture" scheme="http://www.sixapart.com/ns/types#tag" />
+   <category term="18" label="presentation" scheme="http://www.sixapart.com/ns/types#tag" />
+   <category term="19" label="userinterface" scheme="http://www.sixapart.com/ns/types#tag" />
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[職場で、これから作成するウェブサイトのワイヤーフレーム + サイトマップを作りたくなって、いろいろ調べた際のメモ。<br />
+<br />
+
+<h4>ワイヤーフレーム</h4>
+
+<a href="http://www.evolus.vn/Pencil/" target="_blank">pencil</a>は、ワイヤーフレームというには、ちょっと具体的過ぎる感じ。<br />
+結局、ER図作成でお世話になっている <a href="http://gliffy.com/" target="_blank">gliffy</a> を選択した。<br />
+<br />
+gliffy は、矩形選択してコピーとか移動とかすると、<br />
+操作対象の中のレイヤーの z-index が維持されなかったりグルーピングがおかしなことになったりするけれど、<br />
+そういうクセを許容させるくらい使い勝手が良い。<br />
+<br />
+また、今回の目的はイメージを共有することなので、<br />
+オンラインで共有できて、さらにコラボレーション(共同編集)できるのも良い。<br />
+<br />
+
+<h4>サイトマップ</h4>
+
+<a href="http://writemaps.com/" target="_blank">writemaps</a>は、見た目キレイで良いのだが、機能が足りないので、却下。<br />
+
+<a href="https://tonextone.com:8000/trac/wiki/memo/presentation" target="_blank">dot -> graphviz</a> も試したが、コラボレーションに向かないので、却下。<br />
+
+結局、マインドマップツールの、<a href="http://www.mindomo.com/view.htm?m=764849a370e24bc8b79705285d1d6e63" target="_blank">MINDOMO</a>を使ってみた。<br />
+
+<a href="http://www.serena.com/products/prototype-composer/" target="_blank">SERENA Prototype Composer</a> も気になったが、ちょっと高機能過ぎる気がするのと、Windows アプリなのでコラボレーション的な制限を感じたので、保留。<br />
+今から触ってみます。<br />
+
+<br />
+以上、とりあえずのメモ。
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>Jester is ActiveResource client lib. for Javascript.</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2009/03/08-1727.html" />
+   <id>tag:tonextone.com,2009:/type//1.29</id>
+   
+   <published>2009-03-08T08:27:09Z</published>
+   <updated>2009-03-14T03:28:56Z</updated>
+   
+   <summary> JavaScript で REST API をたたく場合、 XMLHttpRe...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   <category term="10" label="ajax" scheme="http://www.sixapart.com/ns/types#tag" />
+   <category term="9" label="javascript" scheme="http://www.sixapart.com/ns/types#tag" />
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[<p>
+JavaScript で REST API をたたく場合、<br />
+XMLHttpRequest, IFRAMEHttpRequest, JSONScriptRequest(JSONP) などを使うわけだが、<br />
+<a href="http://thoughtbot.com/projects/jester" target="_blank">Jester</a>は、
+これを抽象化して、<b>xx.find()</b>, <b>xx.save()</b> とかいうカッコいい API を提供してくれる。</p>
+
+<p>
+そもそも、REST を抽象化して ActiveRecord パターン似の API でやりましょう、<br />
+という <a href="http://api.rubyonrails.org/files/vendor/rails/activeresource/README.html" target="_blank">Active<i>Resource</i></a> がRails で提唱・実装されている。<br />
+その後、この ActiveResource の実装がいくつか公開されている中で、<br />
+クライアントライブラリの JavaScript 実装として有名なのが Jester 。
+</p>
+
+<p>
+prototype.js, jQuery なんかの Ajax.foobar() を使ってゴリゴリやるのが今の日本の主流だと思うが、<br />
+<a href="http://webos-goodies.jp/archives/how_to_use_activeresource_1.html" target="_blank">WebOSGoodies</a> で ActiveResource が絶賛されていることもあり、Jester で軽く試してみた。
+</p>
+
+<h4>Firebug <=> Twitter API</h4>
+とにかく手軽に試したいので、
+<ul>
+ <li>Firebug のコンソール上で Jester を利用</li>
+ <li>既存の REST API である Twitter API を操作</li>
+</ul>
+というプランで。
+
+<p>
+prototype.js, jester.js をロードするだけの HTML を書く。<br />
+<a href="http://www.flickr.com/photos/tonextone/3336765287/" title="1.load by tonextone, on Flickr"><img src="http://farm2.static.flickr.com/1202/3336765287_a9fe1a5b15.jpg" width="500" height="477" alt="1.load" /></a><br />
+<textarea name="code" class="xml" cols="50" rows="50">
+<html>
+ <head>
+  <script src="./lib/prototype-1.6.0.3.js"></script>
+  <script src="./lib/jester.js"></script>
+ </head>
+ <body></body>
+</html>
+</textarea><br />
+</p>
+
+<p>
+おもむろに使ってみる。find('all' {username: 'tonextone'}, console.log);<br />
+<a href="http://www.flickr.com/photos/tonextone/3337595598/" title="2.find_by_username by tonextone, on Flickr"><img src="http://farm2.static.flickr.com/1246/3337595598_02413317a7.jpg" width="500" height="477" alt="2.find_by_username" /></a>
+<textarea name="code" class="javascript" cols="50" rows="50">
+// define Twitter model.
+Resource.model('Twitter', {
+  prefix: 'http://twitter.com/statuses',
+  format: 'json',
+  urls: {
+    list: '/user_timeline/:username.json',
+    show: '/show/:id.json'
+  }
+});
+
+// then use it.
+Twitter.find('all', {
+    username: 'tonextone'
+  },
+  console.log
+);
+</textarea><br />
+</p>
+
+<p>
+DONE!<br />
+<a href="http://www.flickr.com/photos/tonextone/3337595630/" title="3.done by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3619/3337595630_97be1678f1.jpg" width="500" height="477" alt="3.done" /></a>
+</p>
+
+<p>
+レスポンスの中を見てみる。<br />
+<a href="http://www.flickr.com/photos/tonextone/3337595664/" title="4.inspect by tonextone, on Flickr"><img src="http://farm2.static.flickr.com/1164/3337595664_23ed764e83.jpg" width="500" height="477" alt="4.inspect" /></a>
+</p>
+
+<p>
+find(1274085406, console.log);<br />
+<a href="http://www.flickr.com/photos/tonextone/3337595684/" title="5.find_by_id by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3606/3337595684_138b6f0cfa.jpg" width="500" height="477" alt="5.find_by_id" /></a>
+<textarea name="code" class="javascript" cols="50" rows="50">
+Twitter.find(1274085406, console.log);
+</textarea><br />
+</p>
+
+<p>
+レスポンスの中を見てみる。<br />
+<a href="http://www.flickr.com/photos/tonextone/3337595718/" title="6.inspect_again by tonextone, on Flickr"><img src="http://farm2.static.flickr.com/1097/3337595718_63121dfb1f.jpg" width="500" height="477" alt="6.inspect_again" /></a>
+</p>
+
+<p>
+サーバとのやりとりを確認。<br />
+<a href="http://www.flickr.com/photos/tonextone/3336765411/" title="7.transports by tonextone, on Flickr"><img src="http://farm2.static.flickr.com/1186/3336765411_297240222b.jpg" width="500" height="464" alt="7.transports" /></a>
+</p>
+
+<p>
+要するに JSONP です。<br />
+<a href="http://www.flickr.com/photos/tonextone/3336765435/" title="8.jsonp by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3560/3336765435_f119a1109b.jpg" width="500" height="464" alt="8.jsonp" /></a>
+</p>
+
+<p>
+簡単です。お試しあれ。
+</p>
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>FreeBSD リモートアップデート 5.4-RELEASE =&gt; 6.4-RELEASE</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2009/01/31-1655.html" />
+   <id>tag:tonextone.com,2009:/type//1.28</id>
+   
+   <published>2009-01-31T07:55:07Z</published>
+   <updated>2009-01-31T11:53:12Z</updated>
+   
+   <summary> さくらで借りている専用サーバー(このブログも入ってる)の OS を、 リモート...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[<p>
+さくらで借りている専用サーバー(このブログも入ってる)の OS を、<br />
+リモートアップデートした。<br />
+<br />
+FreeBSD 5.4-RELEASE => 6.4-RELEASE<br />
+<br />
+5.4 用の ports のリポジトリが更新されなくなって来ている気がしたのが理由。<br />
+</p>
+
+<p>
+OS のアップデート自体は、ほぼ無問題で、<br />
+ただ locale の調整が必要そうなので、それを今から解消する。<br />
+<br />
+ports のアップデートも、無問題。<br />
+<br />
+ports で、不用意に perl をアップデートしたので、少しはまった。<br />
+</p>
+
+<p>
+locale 問題を解消したら、<br />
+一連の詳細を trac に作業記録を書いて、このエントリからリンクする予定。<br />
+# trac も locale の問題でエラーを吐いているので。<br />
+</p>
+
+<p>
+ということで、
+<a href="https://tonextone.com:8000/trac/wiki/server/maintenance/2009/01/31">
+作業記録
+</a>。
+</p>]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>店舗情報の版管理 (skypefind の場合)</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2008/11/29-1311.html" />
+   <id>tag:tonextone.com,2008:/type//1.26</id>
+   
+   <published>2008-11-29T04:11:54Z</published>
+   <updated>2009-03-08T08:26:22Z</updated>
+   
+   <summary> ...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="おもう" scheme="http://www.sixapart.com/ns/types#category" />
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[<a href="http://www.flickr.com/photos/tonextone/3336785815/" title="1.search_result by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3305/3336785815_a68970ff43.jpg" width="500" height="417" alt="1.search_result" /></a><br />
+<a href="http://www.flickr.com/photos/tonextone/3336785831/" title="2.spot_detail by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3395/3336785831_78ca061063.jpg" width="500" height="417" alt="2.spot_detail" /></a><br />
+<a href="http://www.flickr.com/photos/tonextone/3336785859/" title="3.spot_try_to_conflict by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3602/3336785859_3058f19735.jpg" width="477" height="500" alt="3.spot_try_to_conflict" /></a><br />
+<a href="http://www.flickr.com/photos/tonextone/3336785921/" title="4.spot_conflict by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3338/3336785921_34f2029336.jpg" width="477" height="500" alt="4.spot_conflict" /></a><br />
+<a href="http://www.flickr.com/photos/tonextone/3337616124/" title="5.spot_revise by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3634/3337616124_830da9e84c.jpg" width="500" height="417" alt="5.spot_revise" /></a><br />
+<a href="http://www.flickr.com/photos/tonextone/3336785889/" title="6.spot_revision_log by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3383/3336785889_b35e175f24.jpg" width="349" height="500" alt="6.spot_revision_log" /></a><br />
+<a href="http://www.flickr.com/photos/tonextone/3336785873/" title="7.spot_review by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3361/3336785873_3acae7410c.jpg" width="500" height="417" alt="7.spot_review" /></a><br />
+<a href="http://www.flickr.com/photos/tonextone/3337616080/" title="8.spot_flag by tonextone, on Flickr"><img src="http://farm4.static.flickr.com/3647/3337616080_7abd1da010.jpg" width="500" height="417" alt="8.spot_flag" /></a><br />
+
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>The Art of SQL「10 章 戦力の結集」「11章 計略」から読み取ったこと。</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2008/10/05-1616.html" />
+   <id>tag:tonextone.com,2008:/type//1.25</id>
+   
+   <published>2008-10-05T07:16:50Z</published>
+   <updated>2008-11-29T04:32:06Z</updated>
+   
+   <summary>        スキーマのモデリング技法のうち重要なものは、以下の 2 つ。  ...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   <category term="21" label="sql" scheme="http://www.sixapart.com/ns/types#tag" />
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[<ol>
+  <li>
+    スキーマのモデリング技法のうち重要なものは、以下の 2 つ。
+    <dl>
+      <dt>第3正規形(3NF)</dt>
+      <dd>
+        汎用的な(最適化されていない、中立的な)スキーマ。<br />
+        マスター/ディテールもこっち。
+      </dd>
+      <dt>スタースキーマ</dt>
+      <dd>
+        データ・ウェアハウス用スキーマ。<br />
+        分類のキーとなる「ディメンジョン」表。<br />
+        各種「ディメンジョン」の組み合わせに対応する集計可能な値「メジャー」だけを含む「ファクト」表。<br />
+      </dd>
+    </dl>
+  </li>
+  <li>
+    メタ設計よりも、サブタイプを使おう。<br />
+    まだ、ピンと来ないので、引き続き、調べ中。
+  </li>
+</ol>
+
+<dl>
+  <dt>参考URL:</dt>
+  <dd>
+    <a href="http://otndnld.oracle.co.jp/document/products/oracle10g/102/doc_cd/server.102/B19217-02/schemas.htm">スキーマのモデリング化技法</a>
+  </dd>
+  <dd>
+    <a href="http://homepage2.nifty.com/mnakamura/dw/dwwords.html">データウェアハウス関連用語　解説</a>
+  </dd>
+</dl>
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>The Art of SQL「4 章 策略」から読み取ったこと。</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2008/09/15-2320.html" />
+   <id>tag:tonextone.com,2008:/type//1.24</id>
+   
+   <published>2008-09-15T14:20:34Z</published>
+   <updated>2008-11-09T06:14:29Z</updated>
+   
+   <summary> 効果的なフィルターとして働くカラムを見つける。 なるべく早い段階で、そのフィル...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   <category term="21" label="sql" scheme="http://www.sixapart.com/ns/types#tag" />
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[<ol>
+<li>効果的なフィルターとして働くカラムを見つける。</li>
+<li>なるべく早い段階で、そのフィルターを適用する。</li>
+</ol>
+
+<h3>例1: 結合する前にフィルター</h3>
+
+結合する前にフィルタリングできるならば、そうしたほうが速いに決まっている。<br />
+
+<textarea name="code" class="sql" cols="50" rows="50">
+
+-- before
+SELECT A.x
+ FROM ( A JOIN B ON A.a_id = B.a_id )
+ WHERE B.y = 'foo' ;
+
+-- after (faster)
+SELECT A.x
+ FROM ( A JOIN B ON B.a_id = A.a_id AND B.y = 'foo' ) ;
+
+</textarea><br />
+
+旧来の結合構文でも、同様。<br />
+
+<textarea name="code" class="sql" cols="50" rows="50">
+
+-- before
+SELECT A.x
+ FROM A, B
+ WHERE A.a_id = B.a_id
+ AND B.y = 'foo' ;
+
+-- after (faster)
+SELECT A.x
+ FROM A, ( SELECT * FROM B WHERE B.y = 'foo' ) AS C
+ WHERE A.a_id = C.a_id
+
+</textarea><br />
+
+<h3>例2: IN か EXISTS か？</h3>
+
+サブクエリの内側のフィルターが効果的な場合は IN (非相関サブクエリ)<br />
+サブクエリの外側のフィルターが効果的な場合は EXISTS (相関サブクエリ)<br />
+
+ただし、相関サブクエリの結合キーには、インデックスを張るべし。<br />
+
+<textarea name="code" class="sql" cols="50" rows="50">
+
+-- A.z = 'bar' が効果的なフィルターである場合、
+-- ( B.a_id にインデックスを張るのを忘れずに )
+SELECT A.x
+ FROM A
+ WHERE A.z = 'bar' ;
+ AND EXISTS( SELECT * FROM B WHERE B.a_id = A.a_id AND B.y = 'foo' ) ;
+
+-- B.y = 'foo' が効果的なフィルターである場合、
+SELECT A.x
+ FROM A
+ WHERE A.z = 'bar' ;
+ AND A.a_id IN( SELECT B.a_id FROM B WHERE B.y = 'foo' ) ;
+
+-- この場合、以下のようにも書ける、
+SELECT C.x
+ FROM (SELECT * FROM A WHERE A.z = 'bar' ) AS C, (SELECT * FROM B WHERE B.y = 'foo' ) AS D
+ WHERE C.a_id = D.a_id ;
+
+-- あるいは、
+SELECT A.x
+ FROM ( A JOIN B ON A.a_id = B.a_id AND A.z = 'bar' AND B.y = 'foo' );
+
+</textarea><br />
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>Re: Emacs の moccur-grep-find で特定のファイルを無視したい</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2008/07/18-0038.html" />
+   <id>tag:tonextone.com,2008:/type//1.23</id>
+   
+   <published>2008-07-17T15:38:01Z</published>
+   <updated>2008-07-18T01:12:57Z</updated>
+   
+   <summary>ずっと dmoccur を使ってたんだけど、 ( moccur-grep(-fi...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   <category term="15" label="emacs" scheme="http://www.sixapart.com/ns/types#tag" />
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[ずっと dmoccur を使ってたんだけど、
+<blockquote>
+( moccur-grep(-find)は、) find-file でファイルを開くことをしないので，dmoccur よりもはやく検索できますし，バッファが氾濫することもありません．
+</blockquote>
+だそうで試してみることにしました。<br />
+<br />
+で、まずは .svn/* とかを検索対象から省いてから速さを比較しようと思ったんだけれど、この「省き方」の情報が無い。<br />
+<br />
+そんな中、 id:higepon さんが moccur を愛用しているようだったので質問させていただいたところ、<br />
+ <a href="http://d.hatena.ne.jp/higepon/20080717/1216264518" target="_blank">elisp を書いていただきました</a>。ありがとうございました!!!<br />
+<br />
+で、結論を言うと、<br />
+どうやら、 moccur-grep(-find) でも、 dmoccur の設定(dmoccur-exclusion-mask)を、利用してくれるようです。<br />
+ color-moccur.el を読めないなりに読んでみると、どうもそのようです。<br />
+<br />
+現在、以下のような設定で、試用中です。<br />
+<textarea name="code" class="xml" cols="50" rows="50">
+(setq moccur-grep-default-mask "\\.\\(html\\|php\\|js\\|css\\)$")
+(load "color-moccur")
+(setq dmoccur-recursive-search t)
+(setq dmoccur-exclusion-mask (append '("\\~$" "\\.svn\\/") dmoccur-exclusion-mask))
+(setq dmoccur-mask '("\\.\\(html\\|php\\|js\\|css\\)$"))
+</textarea>
+<br />
+もともと dmoccur の設定があったせい(おかげ)で、<br />
+id:higepon さんから教えていただいた設定を追加しても(しなくても)状況が変化せず、ちょっと混乱してしまいましたが、<br />
+id:higepon さんの elisp も、期待どおりの動作をしています。<br />
+<br />
+まだ、試用を開始したばかりなので、もしかしたら、この結論も正しくないかもしれません。<br />
+間違いなどあれば、ご指摘いただければ幸いです。<br />]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>和訳してみた</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2008/01/03-2052.html" />
+   <id>tag:tonextone.com,2008:/type//1.19</id>
+   
+   <published>2008-01-03T11:52:23Z</published>
+   <updated>2008-01-03T13:36:20Z</updated>
+   
+   <summary>&quot;Higher-Order JavaScript&quot; by Sean M. Bur...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[<a href="http://interglacial.com/hoj/hoj.html" target="_blank">"Higher-Order JavaScript" by Sean M. Burke</a> を和訳した。
+<a href="/neta/hoj/hoj.html">"Higher-Order JavaScript"(ja)</a><br />
+<br />
+"Higher-Order" という表現に何か高尚なものを感じ、
+JavaScript のすごいことが書いてあると期待し del.icio.us したものの、それっきりになっていたので。<br />
+<br />
+最初に斜め読みした段階で、実は、期待していたものではなく、
+ Perl の人が「JavaScript で Perl を書く」ためのものであることがわかったのだが、<br />
+ trivial なことでも良いので、何か吸収できるだろうと信じて、区切りの良いところまで訳してしまうことにした。<br />
+
+以下、その過程で脳裏をよぎった物事:
+<ul>
+<li>
+x.func = function() { return this; } ならば、<br />
+x.func() の this は x 。<br />
+x.func.apply(y) の this は y 。<br />
+Function#apply(object, [arg, ..]) は、 prototype.js でいうと、Function#bind(object, arg, ...) 
+</li>
+<li>
+<a href="http://prototypejs.org/api/" target="_blank">Prototype API Documentation</a> を読もう。要所でソースコードも。
+</li>
+<li>
+Perl のリストという概念とか、 $arrayref = \@arrayref; $hashref = \%hashref とか、やっぱり変態的。
+</li>
+<li>
+lisp のリストは俺的にしっくりくるか？ emacs lisp で hello world してみるか。
+</li>
+</ul>
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>Google Maps API を SSL で使えるようにしてみる。</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2007/10/02-0112.html" />
+   <id>tag:tonextone.com,2007:/type//1.18</id>
+   
+   <published>2007-10-01T16:12:31Z</published>
+   <updated>2009-07-19T14:52:01Z</updated>
+   
+   <summary> 2008/03 : /maps?file=api を書き換えるための正規表現の...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[<p style="border: 1px #cc6666 dotted; padding: 0.2em; color: #999999; font-size: 120%; font-weight: bold;">
+2008/03 : /maps?file=api を書き換えるための正規表現のパターンを微調整しました。
+</p>
+
+<p style="border: 1px #cc6666 dotted; padding: 0.2em; color: #999999; font-size: 120%; font-weight: bold;">
+2008/05/15 : 通りすがりさんの報告を受けて、正規表現のパターンをさらに微調整しました。
+</p>
+
+<p style="border: 1px #cc6666 dotted; padding: 0.2em; color: #999999; font-size: 120%; font-weight: bold;">
+2008/07/25 : Google 側のコードに変更があったようで、機能しなくなったので、
+正規表現のパターンを緩めに調整しました。
+</p>
+
+<p style="border: 1px #cc6666 dotted; padding: 0.2em; color: #999999; font-size: 120%; font-weight: bold;">
+2009/07/19 : kobuchi さんの報告を受けて、修正しました。<br />
+Google 側のコードの変更により /maps?file=api だけではなく、そこから先で動的にロードされる JS ファイルの内部も書き換えることが必要になったので、そのように変更しました。
+</p>
+
+Google Maps API は HTTPS では提供されていないらしい。<br />
+(Google Analytics には HTTPS 版もある。というのは先日知りました。)<br />
+<br />
+しかし、HTTPS なページに、HTTP なリソースを読み込むと IE 曰く、<br />
+「このページにはセキュリティで保護されている項目と保護されていない項目が含まれています」と。</br>
+<br />
+この問題を何とかしなければならない機会があったので、<br />
+HTTPS な proxy をかまして何とかしてみた。<br />
+<br />
+要するに、 Ｇoogle Maps API を使うためには、普通
+<p>http://maps.google.com/maps?file=api&amp;v=2&amp;key=...</p>
+っていう JavaScript を読み込むけれども、<br />
+まずこの JavaScript を https://(自前の proxy )経由でリクエストし、<br />
+この JavaScript にハードコードされている http://... を<br />
+https://(自前の proxy )経由でリクエストするように書き換えれば良いだけ。<br />
+
+以下は PHP での例。
+
+<p>
+デモ: <a href="https://ssl.tonextone.com/neta/gmap_over_ssl/">https://ssl.tonextone.com/neta/gmap_over_ssl/</a> 
+</p>
+# SSL の証明書を買っていないので、その旨の警告は出ます。<br />
+<br />
+
+./rewrite_gmaps_api.php<br />
+<textarea name="code" cols="50" rows="10" class="php">
+require_once 'HTTP/Request.php';
+
+$url = ($_SERVER["PATH_INFO"]) ? preg_replace('<^/>', '', $_SERVER["PATH_INFO"]) : '';
+$url .= ($_SERVER["QUERY_STRING"]) ? '?'.$_SERVER["QUERY_STRING"] : '';
+
+$proxy =& new HTTP_Request($url);
+$proxy->setMethod(HTTP_REQUEST_METHOD_GET);
+$status['proxy'] =& $proxy->sendRequest();
+
+if (PEAR::isError($status['proxy'])) { $response = ''; }
+else {
+  $response = $proxy->getResponseBody();
+  $response_header = $proxy->getResponseHeader();
+}
+
+if ($_SERVER["HTTPS"] == 'on') {
+  $url_base = 'https://ssl.tonextone.com/neta/gmap_over_ssl/';
+} else {
+  $url_base = 'https://tonextone.com/neta/gmap_over_ssl/';
+}
+
+$pattern = array(
+  '<([\'"])(http://[^\'"]*\.js[\'"?])>',
+  '<(["\'])(http://)>',
+);
+$replacement = array(
+  '\\1'.$url_base.'rewrite_gmaps_api.php/\\2',
+  '\\1'.$url_base.'proxy.php/\\2',
+);
+
+$response = preg_replace($pattern, $replacement, $response);
+
+header("Content-Type: {$response_header['content-type']}");
+// header("Content-Length: {$response_header['content-length']}");
+echo $response;
+</textarea><br />
+<br />
+./proxy.php<br />
+<textarea name="code" cols="50" rows="10" class="php">
+require_once 'HTTP/Request.php';
+
+$url = ($_SERVER["PATH_INFO"]) ? preg_replace('<^/>', '', $_SERVER["PATH_INFO"]) : '';
+$url .= ($_SERVER["QUERY_STRING"]) ? '?'.$_SERVER["QUERY_STRING"] : '';
+
+$proxy =& new HTTP_Request($url);
+$proxy->setMethod(HTTP_REQUEST_METHOD_GET);
+$status['proxy'] =& $proxy->sendRequest();
+
+if (PEAR::isError($status['proxy'])) { $response = ''; }
+else {
+  $response = $proxy->getResponseBody();
+  $response_header = $proxy->getResponseHeader();
+}
+
+header("Content-Type: {$response_header['content-type']}");
+// header("Content-Length: {$response_header['content-length']}");
+echo $response;
+</textarea>]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>UserPrivateGroup の使いどころ</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2007/09/23-0115.html" />
+   <id>tag:tonextone.com,2007:/type//1.17</id>
+   
+   <published>2007-09-22T16:15:31Z</published>
+   <updated>2007-09-22T17:23:26Z</updated>
+   
+   <summary> unix 系のサーバにアカウントを作成する際に、 $ id someone ;...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[<p>
+unix 系のサーバにアカウントを作成する際に、<br />
+<textarea name="code" cols="50" rows="10" class="js">
+$ id someone ;
+uid=1001(someone) gid=1001(someone) groups=1001(someone),500(project),10(wheel)
+</textarea><br />
+というように 'someone' のプライマリグループとして 'someone' を設定する事がある。<br />
+このようなポリシー、またはこのような 'someone' グループを User Private Group というらしい。<br />
+<br />
+なんか意味無くグループ増えるだけじゃん…と思って、ここ最近では避けるようにしていたんだけど、<br />
+本日ようやく使いどころがわかった。<br />
+</p>
+<p>
+プロジェクトチームでファイルを共有する場合、
+<ol>
+<li>同じグループ 'project' に 'someone1', 'someone2' が参加している状態にして、</li>
+<li>共有したいファイルの所有グループを 'project' にし、</li>
+<li>グループ読み書き権限を付与しておく</li>
+</ol>
+…というのは良くあるケースだと思う。<br />
+2,3 を実現するためには、それぞれ、 setGID, umask(002) を使ったりする。
+</p>
+<p>
+このようなケースで、<br />
+User Private Group ポリシーを採用していない場合、つまり<br />
+<textarea name="code" cols="50" rows="10" class="js">
+$ id someone1 ;
+uid=1001(someone1) gid=500(project) groups=500(project),10(wheel)
+$ id someone2 ;
+uid=1002(someone2) gid=500(project) groups=500(project),10(wheel)
+</textarea><br />
+のような場合、共有したくないファイルを作成するのが難しい。<br />
+普通にファイルを作成するだけで someone1:project の所有物となり、<br />
+umask(002) の効果で、自動的に project グループで共有されてしまう。
+</p>
+<p>
+一方、User Private Group ポリシーを採用していれば、<br />
+普通にファイルを作成した場合は、 someone1:someone1 の所有物となり誰とも共有されず、<br />
+project グループで共有されるのは setGID されたディレクトリ内だけになる。
+</p>
+<p>
+この違いが、重要な場合もあるだろう。<br />
+例えば、共有レンタルサーバの管理とかする場合は必須だろうと思う。
+</p>
+
+# umask のほうをディレクトリ毎に設定するのも一案だが、その方法は、まだ知らない。
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>Apollo 雑感</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2007/03/23-0029.html" />
+   <id>tag:tonextone.com,2007:/type//1.14</id>
+   
+   <published>2007-03-22T15:29:16Z</published>
+   <updated>2007-03-24T15:49:37Z</updated>
+   
+   <summary>Adobe Labs - Apollo 面白そうなので、HTML + JavaS...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   <category term="9" label="javascript" scheme="http://www.sixapart.com/ns/types#tag" />
+   <category term="18" label="presentation" scheme="http://www.sixapart.com/ns/types#tag" />
+   <category term="19" label="userinterface" scheme="http://www.sixapart.com/ns/types#tag" />
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[<a href="http://labs.adobe.com/technologies/apollo/" target="_blank">Adobe Labs - Apollo</a>
+面白そうなので、HTML + JavaScript + CSS なウィジェットを作ってみた。<br />
+<br />
+まずは普通に、HTML + JavaScript + CSS で、<br />
+GoogleBase のデータを JSONP で展開して入力を補完するっていう単純なものを作った。<br />
+<a href="https://tonextone.com/neta/GDataCompletions/" target="_blank">https://tonextone.com/neta/GDataCompletions/</a><br />
+<br />
+で、これをウィジェットにする。<br />
+全く変更なしで、さくっとウィジェット化できた！<br />
+<a href="https://tonextone.com/neta/GDataCompletions/GDataCompletions.air" target="_blank">https://tonextone.com/neta/GDataCompletions/GDataCompletions.air</a><br />
+<br />
+↑この .air ファイルの実体は zip 書庫で、<br />
+展開すると、HTML, JavaScript, CSS がそっくり入っている。<br />
+確か Konfabulator(現 Y! widget) も、こういう設計だったと思う。<br />
+(今は違うみたいですね)<br />
+<br />
+端的に言えば、Apollo は、<br />
+これまでもいろいろあった Flash 系、HTML 系ウィジェット実行環境を統合する、<br />
+Yet Another なウィジェット実行環境、という印象。<br />
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>Firebug Lite の console.*(); の出力が改行されて欲しい件。</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2006/12/08-1452.html" />
+   <id>tag:tonextone.com,2006:/type//1.10</id>
+   
+   <published>2006-12-08T05:52:11Z</published>
+   <updated>2006-12-25T07:35:32Z</updated>
+   
+   <summary>早速、IE で Firebug Lite を使ってみているのだけれど、 cons...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[早速、IE で <a href="http://www.getfirebug.com/lite.html" target="_blank">Firebug Lite</a> を使ってみているのだけれど、<br />
+console.log(); などによる、コンソールへの出力が、改行されない。<br />
+オシイ。とりあえず応急処置。<br />
+
+<textarea name="code" class="js" cols="50" rows="10">
+--- firebug.js  2006-12-08 14:43:38.750000000 +0900
++++ firebug_patched.js  2006-12-08 14:45:05.093750000 +0900
+@@ -419,7 +419,7 @@
+             }
+             return "?";
+         };
+-        return String(value).replace(/[<>&"']/g, replaceChars);
++        return '<pre>' + String(value).replace(/[<>&"']/g, replaceChars) + '</pre>';
+     }
+
+     function objectToString(object)
+</textarea><br />
+
+追記: 12/25<br />
+コメントでご連絡いただいた、
+<a href="http://webos-goodies.jp/" target="_blank">WebOS Goodies</a>の歩行者さんによる <br />
+<a href="http://webos-goodies.jp/archives/51017768.html" target="_blank">firebug Lite ブックマークレット</a>での修正箇所を参考に、以下のように変更した。<br />
+
+<textarea name="code" class="js" cols="50" rows="10">
+--- firebug.js  2006-12-25 15:11:05.750000000 +0900
++++ firebug_patched.js  2006-12-25 15:05:32.156250000 +0900
+@@ -312,7 +312,7 @@
+     {
+         var row = consoleBody.ownerDocument.createElement("div");
+         row.className = "logRow" + (className ? " logRow-"+className : "");
+-        row.innerHTML = message.join("");
++        row.innerHTML = '<pre>' + message.join("") + '</pre>';
+         appendRow(row);
+     }
+
+</textarea><br />
+
+<a href="http://webos-goodies.jp/" target="_blank">WebOS Goodies</a>の歩行者さんは、
+<blockquote>
+var row = consoleBody.ownerDocument.createElement("pre");
+</blockquote>
+としているのだけど、<br />
+これだと row.className に指定されているであろうスタイル等と干渉する気がしたので、<br />
+innerHTML だけ、pre で囲んでみた。<br />
+結果として IE6 でも改行反映された。]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>MT をもう少しちゃんと使ってみる。</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2006/12/03-0106.html" />
+   <id>tag:tonextone.com,2006:/type//1.9</id>
+   
+   <published>2006-12-02T16:06:47Z</published>
+   <updated>2006-12-02T23:22:46Z</updated>
+   
+   <summary>MT を使って何本かエントリを書いてみて: 本文中の改行の br タグへの変換が...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="おもう" scheme="http://www.sixapart.com/ns/types#category" />
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   <category term="3" label="movabletype" scheme="http://www.sixapart.com/ns/types#tag" />
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[MT を使って何本かエントリを書いてみて:<br />
+<ol>
+
+<li>
+本文中の改行の br タグへの変換が直感に反する。<br />
+でも、そういうものとして定着してしまったのでしょう。<br />
+郷に従います。<br />
+</li>
+
+<li>
+サイドバーとかに表示させる、<br />
+汎用性のある HTML のブロックを 'module' と呼び、<br />
+その 'module' をまとめたものを 'widget' と呼ぶらしい。<br />
+ 'widget' 単位で管理することにした。<br />
+</li>
+
+</ol>
+<br />
+MT は、使い勝手よりも、カスタマイズの自由度が優先された、玄人向けの設計だと思う。<br />
+それが、結局は、受け入れられたんだろうなぁ…と、いまさら思う。<br />
+<br />
+で、Vox は、そうじゃない市場向け、と。<br />
+]]>
+      
+   </content>
+</entry>
+<entry>
+   <title>svn 入門(その2)</title>
+   <link rel="alternate" type="text/html" href="https://tonextone.com/type/2006/11/30-1644.html" />
+   <id>tag:tonextone.com,2006:/type//1.8</id>
+   
+   <published>2006-11-30T07:44:53Z</published>
+   <updated>2009-11-03T16:08:46Z</updated>
+   
+   <summary>前エントリから続き。 前の構成では、衝突の解消がうまく扱えてなかったので、 「極...</summary>
+   <author>
+      <name></name>
+      
+   </author>
+         <category term="やりくりする" scheme="http://www.sixapart.com/ns/types#category" />
+   
+   <category term="15" label="emacs" scheme="http://www.sixapart.com/ns/types#tag" />
+   <category term="14" label="svn" scheme="http://www.sixapart.com/ns/types#tag" />
+   <category term="13" label="versioning" scheme="http://www.sixapart.com/ns/types#tag" />
+   
+   <content type="html" xml:lang="ja" xml:base="https://tonextone.com/type/">
+      <![CDATA[前エントリから続き。<br />
+<br />
+前の構成では、衝突の解消がうまく扱えてなかったので、<br />
+「極力フロントエンドで調整する」という方針にしたがって、<br />
+フロントエンドを変えてみた。<br />
+<br />
+現在の構成は以下の通り、<br />
+<ul>
+ <li>Subversion 1.3.2 (cygwin 版)</li>
+ <li><u>meadow 3.00 (based on GNU Emacs 22.0.90.1)</u></li>
+ <li><u>vc-svn.el (FSF 版)</u></li>
+</ul>
+<br />
+.emacs の変更などはほとんど必要なかったはずだが、結局いろいろいじった。<br />
+使っていないのに JDE やら、ECB までも最新にした(汗)。<br />
+<span style="color: #999999;">
+#<br />
+# meadow の変更点について、蛇足。<br />
+# <br />
+# MULE-UCS は使わない前提になったようなので、該当部分をコメントにした。<br />
+# <br />
+# ;;; (load "un-define");; unicode<br />
+# ;;; (load "un-tools");; unicode<br />
+# <br />
+# <br />
+# ファイルを dired バッファにドロップすると、そのディレクトリにコピーされる!<br />
+# (meadow 2 系までは、ドロップしたファイルが開いていた)<br />
+# で、undo すると、dired 上でだけ消えるが、実際は消えない。<br />
+# 逆に dired からはドラッグできない(一方通行)。<br />
+# ちょっとキモイので、前の挙動に戻す設定がきっとあるはず。<br />
+# <br />
+# <br />
+# w32-symlinks( Windows のショートカットを良きに計らってくれるやつ)<br />
+# が無効っぽくなってたけど、w32-symlinks.el のコメント読んだりして、<br />
+# 結局 (load ) の前に (setq ) したら上手くいった。<br />
+# <br />
+# (setq w32-symlinks-handle-shortcuts t)<br />
+# (load "w32-symlinks")<br />
+#<br />
+</span>
+<br />
+これで、vc 経由の svn が、満足できるレベルで使えるようになった。<br />]]>
+      <![CDATA[<h3>◆ vc の基本操作</h3>
+
+<dl>
+
+ <dt>M-x vc-update</dt>
+ <dd>=> <i>svn update</i><br />
+
+  作業コピーに、最新のリビジョンでの変更を反映する。<br />
+  ※ 現状の vc-svn.el では、 vc-update で<br />
+  ※ レポジトリでのファイルの出没(追加 / 削除)までは追従できないようだ。<br />
+  ※ つまりディレクトリの内容の変更は反映できないようだ。<br />
+  ※ したがって svn update は必要。<br />
+
+ </dd>
+
+ <dt>
+  M-x vc-next-action
+  (あるいは C-x v v)
+ </dt>
+ <dd>=> <i>svn add, svn ci</i><br />
+
+  状況に応じて、次のアクションを行う。<br />
+  未追加ファイルなら、追加フラグ( vc-register )。<br />
+  編集前なら、ロック。<br />
+  編集後なら、チェックイン。<br />
+  ※ svn では「ロックしない」ので、<br />
+  ※ 編集前に v v しても、実質何も起こらない。<br />
+  ※ 編集前に自動で vc-update されるとうれしいかもしれないが、されない。<br />
+
+ </dd>
+
+ <dt>
+  M-x vc-merge
+  (あるいは C-x v m)
+ </dt>
+ <dd>=> <i>svn merge</i><br />
+
+  リビジョンの異なる作業コピーをマージする。<br />
+  衝突(バックエンドが解消しきれない差分)があれば、<br />
+  該当部分を衝突マークで囲む。<br />
+  つまり閲覧中のファイルが書き換えられるわけだが、<br />
+  emacs は通常、バッファを自動で再読み込みしないので注意。<br />
+  (当然、*.mine, *.rA, *.rB というバックアップファイルもできる。)<br />
+
+ </dd>
+
+ <dt>M-x resolve-conflicts</dt>
+ <dd>=> <i>svn resolved<br />
+  　      …しているわけではないようだ。<br />
+  　      *.mine, *.rA, *.rB みたいなファイルは自動削除されないので。
+  　      </i><br />
+
+  衝突の解消を ediff でステキに支援する(以下で図説)。<br />
+
+ </dd>
+
+ <dt>M-x vc-delete-file</dt>
+ <dd>=> <i>svn delete</i><br />
+
+  作業コピーに削除フラグをたてる。<br />
+  ※ その後 svn ci でレポジトリに反映する必要がある。<br />
+
+ </dd>
+
+ <dt>M-x vc-rename-file</dt>
+ <dd>=> <i>svn rename</i><br />
+
+  作業コピーに削除フラグをたてて、別名で複製したものに追加フラグをたてる。<br />
+  ※ その後 svn ci でレポジトリに反映する必要がある。<br />
+
+ </dd>
+
+</dl>
+<br />
+以下、work, work2 という 2 つの作業コピーで、衝突の解消を図説。<br />
+<br />
+▼オレンジ色でマークされている行を変更します。<br />
+<img src="https://tonextone.com/type/start.png" width="649" height="544" /><br />
+<br />
+▼work で変更し、v v (チェックイン)。<br />
+<img src="https://tonextone.com/type/checkin_from_work.png" width="649" height="544" /><br />
+<br />
+▼work2 でも同じところを変更し、v v (チェックイン)。<br />
+<img src="https://tonextone.com/type/checkin_from_work2.png" width="649" height="544" /><br />
+<br />
+▼work2 のチェックインは失敗(work のチェックインによって、レポジトリのリビジョンが更新されているため)。<br />
+マージが必要。<br />
+<img src="https://tonextone.com/type/conflict.png" width="649" height="544" /><br />
+<br />
+▼work2 で、v m (マージ)。衝突した。<br />
+<img src="https://tonextone.com/type/merge.png" width="649" height="544" /><br />
+<br />
+▼M-x vc-resolve-conflicts (衝突の解消)。<br />
+<img src="https://tonextone.com/type/resolve.png" width="649" height="544" /><br />
+<br />
+▼衝突を解消して、*.mine, *.rA, *.rB とかのファイルを削除して、改めてチェックイン。<br />
+(ここでは、敢えて「衝突しない変更」を加えてみたが、無事チェックインできた。)<br />
+<img src="https://tonextone.com/type/resolved.png" width="649" height="544" /><br />
+<br />
+▼work のほうに戻って、M-x vc-update (アップデート)。<br />
+上で加えた「衝突しない変更」も、更新された。<br />
+<img src="https://tonextone.com/type/update.png" width="649" height="544" /><br />
+<br />
+こんな感じで良いんだろうか?<br />
+<br />
+<h3>◆ vc のここが便利(emacsen ユーザにとって)</h3>
+
+<h4>その1. <b>v v, v m</b></h4>
+　日常的には、v v 、たまに v m だけで済みそう。<br />
+<br />
+<h4>その2. <b>ediff の支援</b></h4>
+　ediff は 3 年ほど使ってるので、ありがたい。<br />
+<br />
+<h4>その3. <b>vc dired</b></h4>
+　emacs で複数のファイルを一覧したり一括操作したい場合、<br />
+emacs 上のファイラーである dired(ディレクトリエディタ)を使うんだけど、<br />
+vc では dired に vc の機能を追加した、vc dired モードを使える。<br />
+基本的に、dired と同様の操作方法で、マーク(m)したファイルを対象に一括操作する。<br />
+<br />
+<table border="1">
+ <caption>
+  vc の機能のキー操作の比較
+ </caption>
+ <thead>
+  <tr>
+   <th>機能</th>
+   <th>通常のファイルバッファ</th>
+   <th>vc dired バッファ</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <th>詳細/簡易表示のトグル</th>
+   <td>なし</td>
+   <td>v t</td>
+  </tr>
+  <tr>
+   <th>'next-action'</th>
+   <td>C-x v v</td>
+   <td>v v</td>
+  </tr>
+  <tr>
+   <th>マージ</th>
+   <td>C-x v m</td>
+   <td>v m</td>
+  </tr>
+  <tr>
+   <th>ログ閲覧</th>
+   <td>C-x v l</td>
+   <td>v l</td>
+  </tr>
+  <tr>
+   <th colspan="3">
+    以下、同様。
+   </th>
+  </tr>
+ </tbody>
+</table>
+<br />
+<br />
+とりあえず、そんな感じ。<br />]]>
+   </content>
+</entry>
+
+</feed>

@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="ja" lang="ja" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>tonextone.com/note/ - GMail -&gt; NAV -&gt; POPFile -&gt; OutlookExpress</title>
+  <link rel="top" href="../index.html" />
+<link rel="prev" href="20051111.html" title="MVC2.0 その1" />
+<link rel="next" href="20051127.html" title="PEAR その1" />
+  <link rel="stylesheet" href="../style/style-sites.css" type="text/css" media="screen" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://legacy.tonextone.com/note/rss.rdf" />
+ </head>
+ <body>
+    <h1 id="banner"><a href="/note/../">tonextone.com</a><a href="https://tonextone.com/note/">/note/</a></h1>
+   <p id="credit">Last-modified: 2006-09-01 (金)</p>
+   <p id="credit">Copyright ©master_at_tonextone.com All rights reserved.</p>
+<div id="content">
+  
+  
+    <div id="menu">
+      <p>Category:<a href="../index.html">Top</a>/<a href="index.html">開発日誌</a> (Total 31 items)</p>
+<p><a href="20051111.html">« MVC2.0 その1</a> | <a href="20051127.html">PEAR その1 »</a></p>
+    </div>
+    <div class="item">
+  <h3><a href="20051122.html">GMail -&gt; NAV -&gt; POPFile -&gt; OutlookExpress</a></h3>
+  <span class="meta">
+    Posted : 2005-11-23 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    自ドメインのメールアドレスをいくつか使用している。<br />
+    でも、このサーバには SMTP サーバ( qmail )は立ててるけど、POP サーバは立ててない。<br />
+    だって面倒。<br />
+    で、どうしているかというと:<br />
+    <ol>
+      <li>Reply-To: &lt;foo@bar.com&gt; ヘッダをつけて送信する。</li>
+      <li>foo@bar.com 宛てのメールは dot.qmail-foo で、foo.bar@gmail.com に転送。</li>
+    </ol>
+    基本的にこれだけなんだけど、POP に proxy を 2 段ほど刺している。
+    <a href="http://www.symantec.com/region/jp/products/nav/" target="_blank" >Norton AntiVirus</a> と <a href="http://popfile.sourceforge.net/" target="_blank">POPFile</a>。<br />
+    <br />
+    PC 環境を再構築するハメになってみて、この辺の設定がメンドかったのでメモ。<br />( OutlookExpress の場合です)<br />
+    <img src="../entries/diary/general.png" border="0" /><br />
+    <img src="../entries/diary/server.png" border="0" /><br />
+    <img src="../entries/diary/smtp.png" border="0" /><br />
+    <img src="../entries/diary/detail.png" border="0" /><br />
+    <img src="../entries/diary/POPFile.png" border="0" /><br />
+    百聞は一見に如かず。<br />
+  
+    
+  </div>
+  
+<div class="writeback" id="wb">
+    <h4>トラックバック</h4>
+    
+        <dl id="writebacklist">
+        <dt>1: 人生とソフトウェアをHackする/<a href="http://tomobusan.seesaa.net/article/9154271.html">Gmailのメールをpopfileに通す方法</a> <small>(05/18 21:46)</small></dt><dd>時々 &quot;Gmail&quot; + &quot;popfile&quot; というキーワードで検索して、このブログにたどり着く人がいる。 (Googleでは検索結果のトップに来るみたいだ) popfileの復活ついでにGmailの受信メールをpopfileに通してみたらうまくいったので、ここに書いておく。  「Gmailは強力なスパムフィル..</dd>
+
+        </dl>
+    
+    
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" />
+  
+</div>
+<div id="links">
+<ul>
+  <li>Search
+    <form action="/note/" method="get" enctype="UTF-8">
+<p>
+<input type="hidden" name="m" value="search" />
+<input type="hidden" name="cache" value="off" />
+<input type="text" name="q" value="" size="10" />
+<select name="u">
+<option value="">ALL</option>
+<option value="info">奥付</option>
+<option value="diary">開発日誌</option>
+</select>
+</p>
+<p>
+<input type="checkbox" name="cmt" value="1" checked="checked" />ﾂｯｺﾐも
+<input type="checkbox" name="and" value="1" checked="checked" />AND
+<input type="submit" value="検索" />
+</p>
+</form>
+
+  </li>
+  <li>Calendar
+    <table border="0" cellspacing="0" cellpadding="0" class="calendar">
+<tr class="caption"><td><a href="../index-d_2005-10.html">«</a></td><th colspan="5">November 2005</th><td><a href="../index-d_2005-12.html">»</a></td></tr>
+<tr><th class="su">Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th class="sa">Sa</th></tr>
+<tr><td class="su"></td><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td class="sa">5</td></tr>
+<tr><td class="su">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td><a href="../index-d_2005-11-11.html" title="MVC2.0 その1">11</a></td><td class="sa">12</td></tr>
+<tr><td class="su">13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td class="sa">19</td></tr>
+<tr><td class="su">20</td><td>21</td><td>22</td><td><a href="../index-d_2005-11-23.html" title="GMail -&gt; NAV -&gt; POPFile -&gt; OutlookExpress">23</a></td><td>24</td><td>25</td><td class="sa">26</td></tr>
+<tr><td class="su"><a href="../index-d_2005-11-27.html" title="PEAR その1">27</a></td><td>28</td><td>29</td><td>30</td><td></td><td></td><td class="sa"></td></tr>
+</table>
+
+  </li>
+  <li>Archives
+    <ul>
+<li><a href="../index-d_2006.html">2006</a> (6)</li>
+<li><a href="../index-d_2005.html">2005</a> (32)</li>
+</ul>
+  </li>
+  <li>Categories
+    <ul>
+<li><a href="../index.html">Top</a> (39)<ul>
+  <li><a href="../info/index.html">奥付</a> (1)</li>
+  <li><a href="index.html">開発日誌</a> (31)<ul>
+    <li><a href="server/index.html">server</a> (2)</li>
+</ul></li>
+  <li><a href="../bbs/index.html">bbs</a> (0)</li>
+  <li><a href="../essay/index.html">随筆</a> (3)</li>
+</ul></li>
+</ul>
+  </li>
+  <li>Recent Entries
+    <ul>
+      <li>09/01 <a href="../20060901.html">ブログシステム乗り換えます。</a></li>
+<li>06/12 <a href="20060612.html">open_basedir の 怪</a></li>
+<li>05/29 <a href="20060529.html">俺的PHP似非フレームワーク</a></li>
+<li>05/28 <a href="20060528.html">PHP の強み</a></li>
+<li>03/16 <a href="20060316.html">JavaScript による min-height, max-height の実装。</a></li>
+<li>02/27 <a href="20060227.html">ちょっと安全かもしれない eval() の使い方。</a></li>
+<li>12/31 <a href="../20051231.html">新年の挨拶</a></li>
+<li>12/23 <a href="20051223.html">PostgreSQL で RDB 設計 その2</a></li>
+<li>12/22 <a href="20051222.html">PostgreSQL で RDB 設計 その1</a></li>
+<li>12/13 <a href="server/20051213.html">サーバ管理その1</a></li>
+
+    </ul>
+  </li>
+  <li>Recent Comments
+    
+  </li>
+  <li>Recent TrackBacks
+    
+  </li>
+  <li>Syndicate this site
+    <ul>
+      <li><a href="http://legacy.tonextone.com/note/rss.rdf">RSS 1.0 Feed</a></li>
+    </ul>
+  </li>
+  <li>Powered by
+    <ul>
+      <li>
+        <a href="http://rinn.e-site.jp/rnote/">rNote 0.9.7.5</a>
+      </li>
+      <li>
+        <a href="http://www.bookshelf.jp/soft/meadow.html">Meadow</a>
+      </li>
+      <li>
+        <a href="http://winscp.net/eng/">WinSCP</a>
+      </li>
+    </ul>
+  </li>
+  <li>Del.icio.us tags
+    <script type="text/javascript" src="http://del.icio.us/feeds/js/tags/tonextone?sort=freq;totals;size=10-17;color=000000-0000ff;title="></script>
+  </li>
+  <li>Flickr recent photos
+    <!-- Start of Flickr Badge -->
+    <style type="text/css">/*
+    Images are wrapped in divs classed "flickr_badge_image" with ids
+    "flickr_badge_imageX" where "X" is an integer specifying ordinal position.
+    Below are some styles to get you started!
+    */
+    #flickr_badge_uber_wrapper {text-align:center; width:auto;}
+    #flickr_badge_wrapper {padding:0px;}
+    .flickr_badge_image {float:left; margin:2px;}
+    .flickr_badge_image img {border: 1px solid black !important;}
+    #flickr_badge_source {text-align:left; margin:0 10px 0 10px;}
+    #flickr_badge_icon {float:left; margin-right:5px;}
+    #flickr_www {display:block; padding:0 10px 0 10px !important; font: 11px Arial, Helvetica, Sans serif !important; color:#3993ff !important;}
+    #flickr_badge_uber_wrapper a:hover,
+    #flickr_badge_uber_wrapper a:link,
+    #flickr_badge_uber_wrapper a:active,
+    #flickr_badge_uber_wrapper a:visited {text-decoration:none !important; background:inherit !important;color:#3993ff;}
+    #flickr_badge_wrapper {background-color:#ffffff;border: none;}
+    #flickr_badge_source {padding:0 !important; font: 11px Arial, Helvetica, Sans serif !important; color:#666666 !important;}
+    </style>
+    <div id="flickr_badge_uber_wrapper">
+      <a href="http://www.flickr.com" id="flickr_www">www.<strong style="color:#3993ff">flick<span style="color:#ff1c92">r</span></strong>.com</a>
+      <div id="flickr_badge_wrapper">
+        <script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=10&display=latest&size=t&layout=x&source=user&user=11342253%40N00"></script>
+      </div>
+    </div>
+    <br style="clear:both;">
+    <!-- End of Flickr Badge -->
+    
+  </li>
+  <li>Last.fm Weekly tracks
+    <a href="http://www.last.fm/user/tonextone/?chartstyle=sideGrey"><img src="http://imagegen.last.fm/sideGrey/tracks/tonextone.gif" border="0" alt="tonextone's Last.fm Weekly Tracks Chart" /></a>
+  </li>
+  <li>早起き生活
+    <a href="http://www.hayaoki-seikatsu.com/">
+      <img src="http://www.hayaoki-seikatsu.com/users/tonextone/graphs/sidebar.png" width="150" height="150" alt="早起き生活">
+    </a>
+  </li>
+  <li>
+    <a href="http://www.technorati.com/claim/ud3qys35px" rel="me"></a>
+  </li>
+</ul>
+</div>
+</body></html>

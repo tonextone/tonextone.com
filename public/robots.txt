@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /test/
+Disallow: /hack/
+Disallow: /___webFolder/
+Disallow: /private/
+Disallow: /old/
+Disallow: /.awstats/

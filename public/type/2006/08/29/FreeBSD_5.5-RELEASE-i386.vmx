@@ -1,0 +1,39 @@
+config.version = "8"
+virtualHW.version = "3"
+memsize = "256"
+
+ide0:0.present = "TRUE"
+ide0:0.fileName = "FreeBSD_5.5-RELEASE-i386.vmdk"
+ide0:0.redo = ""
+
+ide1:0.present = "TRUE"
+ide1:0.autodetect = "TRUE"
+# ide1:0.fileName = "C:\Program Files\VMware\iso\5.5-RELEASE-i386-bootonly.iso"
+# ide1:0.deviceType = "cdrom-image"
+ide1:0.fileName = "auto detect"
+ide1:0.deviceType = "cdrom-raw"
+
+ethernet0.present = "TRUE"
+ethernet0.connectionType = "bridged"
+ethernet0.virtualDev = "vlance"
+ethernet0.addressType = "generated"
+ethernet0.generatedAddress = "00:0c:29:c7:a5:90"
+ethernet0.generatedAddressOffset = "0"
+
+usb.present = "TRUE"
+
+scsi0:0.redo = ""
+
+sound.present = "TRUE"
+sound.virtualDev = "es1371"
+
+displayName = "FreeBSD"
+guestOS = "freebsd"
+nvram = "FreeBSD_5.5-RELEASE-i386.nvram"
+
+uuid.location = "56 4d 22 e8 ba d1 b1 a8-a8 85 cd 03 a5 c7 a5 90"
+uuid.bios = "56 4d 22 e8 ba d1 b1 a8-a8 85 cd 03 a5 c7 a5 90"
+
+checkpoint.vmState = "FreeBSD_5.5-RELEASE-i386.vmss"
+
+tools.remindInstall = "TRUE"

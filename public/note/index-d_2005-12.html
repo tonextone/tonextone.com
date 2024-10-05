@@ -1,0 +1,901 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="ja" lang="ja" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>tonextone.com/note/ - 2005-12</title>
+  <link rel="top" href="index.html" />
+<link rel="prev" href="index-d_2005-12-p_1.html" title="6-8" />
+
+  <link rel="stylesheet" href="style/style-sites.css" type="text/css" media="screen" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://legacy.tonextone.com/note/rss.rdf" />
+ </head>
+ <body>
+    <h1 id="banner"><a href="/note/../">tonextone.com</a><a href="https://tonextone.com/note/">/note/</a></h1>
+   <p id="credit">Last-modified: 2006-09-01 (金)</p>
+   <p id="credit">Copyright ©master_at_tonextone.com All rights reserved.</p>
+<div id="content">
+  
+  
+    <div id="menu">
+      <p> Date:<a href="index-d_2005.html">2005</a>/<a href="index-d_2005-12.html">December</a> (Total 8 items)</p>
+<p><a href="index-d_2005-12-p_1.html">« 6-8</a> | 1-5</p>
+    </div>
+    <div class="item">
+  <h3><a href="20051231.html">新年の挨拶</a></h3>
+  <span class="meta">
+    Posted : 2005-12-31 06:00 / Category : [Top]
+  </span>
+  <div class="text">
+    新年、明けましたらおめでとうございます。<br />
+    <br />
+    2005年は、大変お世話になり、<br />
+    お蔭様で、私としては大きな一歩を踏み出す事ができました。<br />
+    2006年は、次の展開を自ら作り出せるかどうかの正念場と心得ております。<br />
+    <br />
+    よろしくご指導ご鞭撻下さいますよう、心よりお願い申し上げます。<br />
+    [<a href="https://tonextone.com/neta/greeting/2006/">謹賀新年2006_犬.html</a>]
+  
+    
+  </div>
+  
+<div class="writeback">
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/20051223.html">PostgreSQL で RDB 設計 その2</a></h3>
+  <span class="meta">
+    Posted : 2005-12-23 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    「<a href="https://tonextone.com/note/diary/20051222.html">PostgreSQL で RDB 設計 その1</a>」の補足。<br />
+
+    PostgreSQL では、WHERE 句に、正規表現が使えるので、いつも重宝している。<br />
+    こんな感じ。<br />
+    <ul>
+      <li>使用前:
+<pre>
+select * from some_table where some_field = 1 or some_field = 4 or ... ;
+</pre>
+      </li>
+      <li>使用後:
+<pre>
+select * from some_table where some_field ~ '^(1|4|...)$';
+</pre>
+      </li>
+    </ul>
+
+   で、配列型のフィールド 'some_array' に対しても、<br />
+   ANY(some_array) をカマせば、これができるだろうと期待していた。<br />
+   <br />
+   いろいろ試したが、どうも無理っぽい[マニュアルより <a href="http://www.postgresql.org/docs/7.4/interactive/functions-comparisons.html#AEN12704" target="_blank">ANY/SOME(array)</a>]。<br />
+   <br />
+   そういう目的では、<br />
+   配列型ではなく TEXT 型とかに配列表現を突っ込むのが良いだろう。<br />
+   とりあえず TEXT 型で用意しておいて、記法は充分検討してゆっくり決めれば良い。<br />
+   <br />
+   例えば、PHP の serialize(); の場合、数値配列は、
+<pre>
+a:2:{i:0;i:123;i:1;i:456;}
+</pre>
+   という感じで、キーと値とが交互に表れるが、<br />
+   このキーと値との選り分けを正規表現なんかでやってられない。<br />
+   そうなると独自記法がベストな気がしてきた( JSON とか XML とかも無意味に面倒)。<br />
+   <br />
+   正規表現のメタキャラクタとして解釈されなくて、<br />
+   尚且つ、データに使われなさそうな文字列を、セパレータにすれば良い。<br />
+   クォーテーションの扱いにも注意。<br />
+   <br />
+   以下、例:<br />
+
+<pre>
+create table fruit
+(
+fruit_id     serial,
+name         text
+);
+
+create table member
+(
+member_id    serial,
+name         text,
+gender       text,
+fruit        text
+);
+
+insert into fruit(name) values('りんご');
+insert into fruit(name) values('みかん');
+insert into fruit(name) values('いちご');
+insert into fruit(fruit_id,name) values(12,'いちじく');
+
+insert into
+member(name,gender,fruit)
+values('太郎','男',':::::1:::::3:::::');
+
+insert into
+member(name,gender,fruit)
+values('花子','女',':::::2:::::3:::::');
+
+insert into
+member(name,gender,fruit)
+values('次郎','男',':::::12:::::');
+
+select * from member,fruit
+where member.fruit ~ (select ':{5}'||fruit.fruit_id||':{5}')
+order by member_id;
+
+ member_id | name | gender |      fruit        | fruit_id |   name
+-----------+------+--------+-------------------+----------+----------
+         1 | 太郎 | 男     | :::::1:::::3::::: |        1 | りんご
+         1 | 太郎 | 男     | :::::1:::::3::::: |        3 | いちご
+         2 | 花子 | 女     | :::::2:::::3::::: |        2 | みかん
+         2 | 花子 | 女     | :::::2:::::3::::: |        3 | いちご
+         3 | 次郎 | 男     | :::::12:::::      |       12 | いちじく
+(5 rows)
+Time: 1.069 ms
+
+select * from member
+where fruit ~ ':{5}(2|3):{5}'
+order by member_id;
+
+ member_id | name | gender |      fruit
+-----------+------+--------+-------------------
+         1 | 太郎 | 男     | :::::1:::::3:::::
+         2 | 花子 | 女     | :::::2:::::3:::::
+(2 rows)
+
+Time: 0.557 ms
+</pre>
+
+  
+    
+  </div>
+  
+<div class="writeback">
+    <h4>ツッコミ</h4>
+    <dl id="writebacklist">
+    <dt>1: jrgrpmhu <small>(07/25 23:48) jrgrpmhu</small></dt><dd>&lt;a href=&quot;<a href="http://jkdrbkij.com&quot;&gt;jqgojfus&lt;/a&gt;" target="_blank">http://jkdrbkij.com&quot;&gt;jqgojfus&lt;/a&gt;</a> [URL=<a href="http://kuussydq.com" target="_blank">http://kuussydq.com</a>]iquwdonv[/URL] qchjdqux <a href="http://uqxzqlta.com" target="_blank">http://uqxzqlta.com</a> jgnoijpy mzibspho</dd>
+
+    </dl>
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/20051222.html">PostgreSQL で RDB 設計 その1</a></h3>
+  <span class="meta">
+    Posted : 2005-12-22 02:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    4 年くらい前から PostgreSQL を使っている。<br />
+    MySQL は、システム上必要な場合以外は使っていない。<br />
+    <br />
+    MySQL が嫌いなわけではなく、<br />
+    「何かみんな MySQL だなぁ…俺も MySQLer になろうかなぁ。」<br />
+    と思ったことは数知れず。<br />
+    <br />
+    でも、PostgreSQL にしかない機能の恩恵に、度々、与ってしまっているので、「乗り換え」には至らず。<br />
+    <br />
+    それにしても、いろいろな RDBMS があるものだ
+    (
+    <a href="http://www.fabalabs.org/research/papers/FabalabsResearchPaper-OSDBMS-Eval.pdf" target="_blank">RDBMS比較資料</a>[PDFです]
+    )。<br />
+    <br />
+    各 RDBMS の特徴は、DB の設計や、チューニングの際に、顕著になるのではないだろうか?<br />
+    「管理しやすくて、検索が速くて、更新もサクサクできる」<br />
+    そんな DB はどうしたら実現できるだろうか…と考えていくと、自然と実装の話になっていく。<br />
+    (もちろん DB を抽象化してポータブルに作っておく事が要求される場合は別。)<br />
+    <br />
+    ということで、前置きが長くなったが、 PostgreSQL でいろいろ試したメモ。<br />
+
+    <h4>データのセグメンテーション</h4>
+    PostgreSQL のデータは、<br />
+    <pre>cluster ⊃ database ⊃ schema ⊃ table</pre>
+    という階層の最下層であるところの 'table' に保存されるが、<br />
+    これらの各階層で権限の設定ができる。<br />
+    <br />
+    「複数ユーザ(100 アカウント程度)を想定した場合、どの階層で分断するのが現実的か?」<br />
+    というのを、改めてマジメに考えてみた。<br />
+    <br />
+
+    以下、 アカウント [user] のデータ識別子を [user] とする。
+    <ol>
+
+     <li>
+      table :
+<pre>
+=> create table [user]_table(...);
+=> grant all on [user]_table to [user];
+</pre>
+      却下<br />
+      (テーブルの一覧がすごい事になるため)。<br />
+      <br />
+     </li>
+
+     <li>
+      schema :
+<pre>
+$ createuser -P [user];
+=> /* public は PUBLIC に grant されてるので消す。*/
+=> drop schema public;
+=> create schema [user] authorization [user];
+</pre>
+      却下<br />
+      (<br />
+      テーブルの一覧には [user] schema に属するテーブルしか現れないが、<br />
+      スーパーユーザにも見えにくくなるため。<br />
+      )<br />
+      <br />
+     </li>
+
+     <li>
+      database :
+<pre>
+$ createdb [user];
+$ createuser -P [user];
+</pre>
+      採用<br />
+      (もっとも現実的)<br />
+      <br />
+     </li>
+
+     <li>
+      cluster :
+<pre>
+$ initdb -D /path/to/[user];
+</pre>
+      で、ポートを切替えて運用。<br />
+      …却下でしょう。<br />
+      <br />
+     </li>
+
+    </ol>
+    ユーザ毎のデータは database のレベルで分断するのが現実的。<br />
+    当たり前の結論に至り、なんか安心。<br />
+
+    <h4>選択型データの保存形式</h4>
+    例えば、<br />
+    「<br />
+    好きな果物はなんですか?<br />
+    A. りんご<br />
+    B. みかん<br />
+    C. いちご<br />
+    ...<br />
+    P. いちじく<br />
+    」<br />
+    という問いに対する回答を保存したい場合、
+    <ol>
+     <li>RAW: 'りんご'とか'いちご'という内容を保存すべきか?</li>
+     <li>CODE: 'A'とか'C'というコードを保存すべきか?</li>
+    </ol>
+    <br />
+    ◆RAW に対する CODE の strong / weak points :<br />
+    <br />
+    [管理系]<br />
+    Ｏ コードと内容との対応を外部で一元管理できるので修正が容易。<br />
+    Ｘ コードと内容との対応表が無いとデータとして成立しない。<br />
+    <br />
+    [検索系]<br />
+    Ｏ データが簡潔に表せるのでちょっと速いかも。<br />
+    Ｘ 特になし。<br />
+    <br />
+    [更新系]<br />
+    Ｏ 特になし。<br />
+    Ｘ 特になし。<br />
+    <br />
+    管理系の視点で CODE のほうが有利と判断する。<br />
+    これも「正規化」に通じる当たり前の結論。<br />
+    ただし、コードと内容との対応表(マスターテーブル) の死守が前提。<br />
+
+    <h4>データ構造の保存</h4>
+    例えば、
+<pre>
+members =
+[
+    {
+      'name': '太郎',
+      'gender': '男'
+      'fruits': [1, 3]
+    },
+
+    {
+      'name': '花子',
+      'gender': '女'
+      'fruits': [2, 3, 11]
+    }
+];
+</pre>
+    というデータ構造を保存したい場合、
+    <ol>
+     <li>
+      NORMAL: <br />
+      データの値 1 つをフィールド 1 つに( 1 対 1 に)保存するべきか?<br />
+      上の例の場合、正規化後のテーブルは 3 つか 4 つになるはず。<br />
+      <br />
+     </li>
+     <li>
+      BULK: <br />
+      上の例(意図的に JSON で記述してある)のように、<br />
+      「データのラベルや値を含む構造そのものを適切に表現する文字列」<br />
+      として保存するべきか?<br />
+      <br />
+     </li>
+    </ol>
+    BULK の例としては、JSON の他に、<br />
+    PHPコードそのもの( array('name'=>'太郎',...) )、<br />
+    それを serialize(); したもの、あるいは、XML などを想定している。<br />
+    また、少し毛色が違うが、PostgreSQL の配列型データも、BULK の一種として考える。<br />
+    <br />
+    ◆NORMAL に対する BULK の strong / weak points :<br />
+    <br />
+    [管理系]<br />
+    Ｏ データ構造とテーブル定義の結合度が低いので、より汎用性がある。<br />
+    Ｘ データを直接操作しにくい ?<br />
+    &nbsp;&nbsp;=> PostgreSQL の配列型では問題無し。<br />
+    <br />
+    [検索系]<br />
+    Ｏ 主テーブルを検索するだけで、該当するデータ構造を取得できる。<br />
+    Ｘ 直積を作りにくい ?<br />
+    &nbsp;&nbsp;=> PostgreSQL の配列型では問題無し。<br />
+    <br />
+    [更新系]<br />
+    Ｏ 主テーブルを更新するだけで、該当するデータ構造を更新できる。<br />
+    Ｘ データ構造の部分的な更新がしにくい ?<br />
+    &nbsp;&nbsp;=> PostgreSQL の配列型では問題無し。<br />
+    <br />
+    総合的に視て、BULK というか「 PostgreSQL の配列型」のほうが有利と判断する。<br />
+    <br />
+    以下、具体例<br />
+    <ol>
+     <li>NORMAL の場合:
+<pre>
+create table fruit
+(
+fruit_id     serial,
+name         text
+);
+
+create table member
+(
+member_id   serial,
+name        text,
+gender      text
+);
+
+create table fruit_to_member
+(
+fruit_to_member_id    serial,
+member_id             integer,
+fruit_id              integer
+);
+
+insert into fruit(name) values('りんご');
+insert into fruit(name) values('みかん');
+insert into fruit(name) values('いちご');
+
+insert into member(name,gender) values('太郎','男');
+insert into member(name,gender) values('花子','女');
+
+-- make relations;
+insert into fruit_to_member(member_id,fruit_id) values(1,1);
+insert into fruit_to_member(member_id,fruit_id) values(1,3);
+
+-- make another relations;
+insert into fruit_to_member(member_id,fruit_id) values(2,2);
+insert into fruit_to_member(member_id,fruit_id) values(2,3);
+
+select * from member,fruit
+where fruit.fruit_id in ( select fruit_id from fruit_to_member
+                          where fruit_to_member.member_id = member.member_id );
+
+ member_id | name | gender | fruit_id |  name
+-----------+------+--------+----------+--------
+         1 | 太郎 | 男     |        1 | りんご
+         1 | 太郎 | 男     |        3 | いちご
+         2 | 花子 | 女     |        2 | みかん
+         2 | 花子 | 女     |        3 | いちご
+(4 rows)
+Time: 0.784 ms
+</pre>
+     </li>
+     <li>BULK の場合:
+<pre>
+create table fruit
+(
+fruit_id     serial,
+name         text
+);
+
+create table member
+(
+member_id   serial,
+name        text,
+gender      text,
+fruit       smallint[]
+);
+
+insert into fruit(name) values('りんご');
+insert into fruit(name) values('みかん');
+insert into fruit(name) values('いちご');
+
+-- make record, with ARRAY;
+insert into member(name,gender,fruit) values('太郎','男','{1,3}');
+
+-- make another record, with ARRAY;
+insert into member(name,gender,fruit) values('花子','女','{2,3}');
+
+/*
+ * where 2 = ANY(some_array)
+ * (古い記法: where some_array *= 2)
+ */
+select * from member,fruit
+where fruit.fruit_id = ANY(member.fruit)
+order by member_id;
+
+ member_id | name | gender | fruit | fruit_id |  name
+-----------+------+--------+-------+----------+--------
+         1 | 太郎 | 男     | {1,3} |        1 | りんご
+         1 | 太郎 | 男     | {1,3} |        3 | いちご
+         2 | 花子 | 女     | {2,3} |        2 | みかん
+         2 | 花子 | 女     | {2,3} |        3 | いちご
+(4 rows)
+Time: 0.506 ms
+</pre>
+     </li>
+    </ol>
+
+    <h4>感想</h4>
+    たまにマニュアルを読むと幸せになれる…と信じよう。
+
+  
+    
+  </div>
+  
+<div class="writeback">
+    <h4>ツッコミ</h4>
+    <dl id="writebacklist">
+    <dt>1: master <small>(12/22 12:27) </small></dt><dd>PostgreSQL 7.4 で、配列型の関数などが一気に増えたようで、<br /><br />where ':' || array_to_string(some_array,':') || ':' ~ ':(1|2):'<br /><br />なんて事もできる。<br /><br />バージョンも気にしないと。<br /><a href="http://www.postgresql.org/docs/current/static/release-7-4#AEN76154" target="_blank">http://www.postgresql.org/docs/current/static/release-7-4#AEN76154</a></dd>
+
+    </dl>
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/server/20051213.html">サーバ管理その1</a></h3>
+  <span class="meta">
+    Posted : 2005-12-13 04:00 / Category : [開発日誌/server]
+  </span>
+  <div class="text">
+    tf-idf + bayesian-filter を試したいので、このサーバに chasen とか mecab とか入れる事にした。<br />
+    で、かなり放置していたので、いろいろと整備した。<br />
+    以下、メモ:<br />
+    <h4>ports</h4>
+    packageはコンパイル済だが、ports は未コンパイル。その分、強力。<br />
+    ports の実体はスケルトン。↓こんな感じ。<br />
+<pre>
+$ tree /usr/ports/graphics/ImageMagick/
+/usr/ports/graphics/ImageMagick/
+|-- Makefile
+|-- distinfo
+|-- files
+|   |-- patch-Makefile.in
+|   |-- patch-coders::jp2.c
+|   `-- patch-configure
+|-- pkg-descr
+`-- pkg-plist
+
+1 directory, 7 files
+</pre>
+    <br />
+    で、portupgrade っていう管理ユーティリティがあって便利。 linux の apt-get に相当する。<br />
+<pre>
+$ # ports を最新にする。
+$ cvsup -g /usr/local/etc/ports-supfile;
+
+$ # ports のデータベースを更新する。
+$ portsdb --update --fetchindex;  # index は配布されているものを使う。
+$ # または、
+$ portsdb --update --updateindex; # index も構築する。
+$ # または、
+$ cd /usr/ports/; make index; # より確実らしい。
+
+$ # ports の内容を表示する。
+$ portversion --verbose;
+
+$ # ports からインストールする。 (= cd /usr/ports/foo/bar; make install clean; )
+$ portinstall --verbose foo/bar;
+
+$ # ports からアップグレードする。
+$ portupgrade --interactive foo/bar;
+
+$ # ports の作業ファイルを削除する。distclean は 2 回指定する。
+$ portsclean --workclean --distclean --distclean;
+</pre>
+    <br />
+    portinstall / portupgrade の再に現れる CUI で、大抵の config オプションを設定できる。<br />
+    ( ports で管理できる config オプションを 'knob' と呼ぶらしい。)<br />
+    <br />
+    設定を変えて再インストールしたい場合とかは、<br />
+<pre>
+$ まず消す。
+$ cd /usr/ports/foo/bar;
+$ make deinstall;
+
+$ # config の CUI を使えるかもしれない。
+$ make config;
+
+# # CUI 使えたら、
+$ make reinstall;
+
+# # CUI 使えなかったら、
+$ # /usr/local/etc/pkgtools.conf の MAKE_ARGS にオプションを指定して、
+$ portinstall --verbose foo/bar ;
+</pre>
+    <br />
+    今回は、先ず、いろいろアップグレードした。
+<pre>
+$ portupgrade --interactive --all;
+$ portsclean --workclean --distclean --distclean;
+</pre>
+    <br />
+    それから、無くて困っていた screen をインストールした。<br />
+    <a href="http://www.freebsd.org/ports/" target="_blank">FreeBSD Ports</a>で cvs から 'screen' を検索して、それが /usr/ports の下にあることを確認して、<br />
+<pre>
+$ portinstall --verbose sysutils/screen;
+$ portsclean --workclean --distclean --distclean;
+</pre>
+    簡単。<br />
+    <br />
+    参考:
+    <ol>
+     <li>
+      <a href="http://www.jp.freebsd.org/www.FreeBSD.org/doc/ja_JP.eucJP/books/handbook/ports.html" target="_blank">
+       アプリケーションのインストール - packages と ports
+      </a>
+     </li>
+     <li>
+      <a href="http://iris.homeunix.net/yayoi/freebsd/inst/portupgrade.asp" target="_blank">
+       portupgrade
+      </a>
+     </li>
+    </ol>
+    <br />
+
+    <h4> src からインストール</h4>
+    APP(ApachePostgresqlPhp) は、 src で管理している。<br />
+    これも、ついでにアップグレード。<br />
+    (apache-1.3.34 も出ているが、これは Apache-SSL が出るまで待つことにした。)<br />
+    <ul>
+     <li>postgresql-8.1.1</li>
+     <li>php-4.4.1</li>
+     <li>ZendOptimizer-2.6.0</li>
+     <li>php-json-ext-1.1.0</li>
+    </ul>
+    PostgreSQL の migration も、<br />
+    <br />
+    [backup]
+<pre>
+pg_dumpall -g > /home/postgres/backup/all.dmp;
+pg_dump -b -F c foo > /home/postgres/backup/foo.dmp;
+</pre>
+
+    [restore]
+<pre>
+psql -f all.dmp template1
+pg_restore -d foo foo.dmp
+</pre>
+    で、無事完了。<br />
+    <br />
+    参考:
+    <ol>
+     <li>
+      <a href="http://www.php.net/release_4_4_1.php" target="_blank">
+       PHP 4.4.1. Release Announcement
+      </a>
+     </li>
+     <li>
+      <a href="http://www.postgresql.org/docs/8.1/interactive/index.html" target="_blank">
+       PostgreSQL 8.1.0 Documentation
+      </a>
+     </li>
+    </ol>
+    <br />
+
+    <h4>ハマりどころ</h4>
+    最近 PHP のリリースが安定していないので、必要以上にビビっていたせいもあり、<br />
+    実は結構ハマった。<br />
+
+    <ol>
+     <li>
+      <dt>$ pkgdb -F;</dt>
+      <dd>
+       このサーバの構築に際して、上記 APP などを src で管理するために、<br />
+       <a href="http://www.vps7.net/" target="_blank" >VPS7</a> の標準構成から package/ports 版をアンインストールして頂いた。<br />
+       その際、PHP の拡張(php4-xxx) の package/ports が取り残されていたらしく、<br />
+       存在しない apache との依存関係を引きずっているようだった。<br />
+       とりあえず、
+<pre>
+$ pkgdb -F;
+</pre>
+       したら問題無さそう。<br />
+       <br />
+      </dd>
+     </li>
+     <li>
+      <dt>autoconf,automake,libtool の重複</dt>
+      <dd>
+       ひとしきり portupgrade/portsclean して、<br />
+<pre>
+$ portversion --verbose;
+</pre>
+       してみたら、autoconf,automake,libtool がバージョン違いで複数ある。<br />
+       不安に思いつつ、PHP を src からインストールする作業に取り掛かると、<br />
+       configure で warning が出て、make も失敗。
+<pre>
+*** Warning: inter-library dependencies are not known to be supported.
+*** All declared inter-library dependencies are being dropped.
+
+*** Warning: libtool could not satisfy all declared inter-library
+*** dependencies of module libphp4.  Therefore, libtool will create
+*** a static module, that should work as long as the dlopening
+*** application is linked with the -dlopen flag.
+</pre>
+       package/ports のツリーがイカレたか?<br />
+       と思ったが、重複自体は問題ないらしい。<br />
+       package/ports 間の依存関係の連鎖を最小限にするために、<br />
+       被依存バージョンを残しつつ、別のバージョンもインストールする方針らしい。<br />
+       とりあえず、libtool とかが見つからないのはマズい気がしてタマらなかったので、<br />
+<pre>
+$ ln -s /usr/local/bin/libtool15 /usr/local/bin/libtool
+</pre>
+       とか、しばらくゴニョゴニョやってたら、なんかコンパイルできた。<br />
+       途中、不安が不安を呼んで、<br />
+       config.log の fail とか warn とかの多さにくじけそうになったが、<br />
+       もともと config.log は、そういうものらしいし、とりあえず動いてるのでヨシ。<br />
+       <br />
+      </dd>
+
+     </li>
+    </ol>
+
+    ということで、PHP に不安が残るので、念のため php.ini を見直す予定。<br />
+    本題の chasen, mecab を、src, ports のどっちで管理するかも要検討。
+
+  
+    
+  </div>
+  
+<div class="writeback">
+    <h4>トラックバック</h4>
+    
+    
+        (1)<br />
+    
+    <h4>ツッコミ</h4>
+    <dl id="writebacklist">
+    <dt>1: master <small>(12/16 17:56) </small></dt><dd>その後、PECL の filter を入れようとしたら、make でこけた。<br />PHP 変わり過ぎ。<br />拡張で提供されるはずの関数の API 真似て、関数を自作しといて、<br />安定したら乗り換えるとか…無謀か。</dd>
+<dt>2: master <small>(12/17 14:19) </small></dt><dd>ちなみに、PRCL の chasen はコンパイルできたんだけど、<br />使うとセグメンテーションエラーで落ちる。<br />しかたないので、システム関数で呼んでおきます。</dd>
+
+    </dl>
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="essay/20051212.html">理解/説明</a></h3>
+  <span class="meta">
+    Posted : 2005-12-12 00:00 / Category : [随筆]
+  </span>
+  <div class="text">
+    「ソレは何か?」<br />
+    という問いに対して応えるために必要な作業は、<br />
+    客観的に知覚できる限りの差異で<br />
+    「ソレ」を「ソレ以外」から区別する作業ではなく、<br />
+    問者の主観的なシナリオの中に抽象化された<br />
+    「ソレ」と「ソレ以外」との関係性を描く作業である。<br />
+    <br />
+    そのためには、<br />
+    その関係性を描くシナリオに、<br />
+    問者のシっている「ソレ以外」を登場させ、それを足場にするか、<br />
+    <br />
+    あるいは、<br />
+    そのシナリオ自体と、<br />
+    問者のシっている別のシナリオとの類似性を頼りにするか、<br />
+    <br />
+    いずれにせよ、<br />
+    問者のシっている物事から「ソレ」へと、想像を及ばせる事になるだろう。<br />
+    <br />
+    こういう作業のツールとしては、モデルが有効だ。<br />
+    <br />
+    モデルを表現するのに最適なのは視覚化であり、<br />
+    その中でもよく使われるのは模式図(2次元的な視覚化)である。<br />
+    <br />
+    特定の状況を表す模式図においては、<br />
+    その状況に登場する要素は<br />
+    「名前」、「アイコン」、「変数」などの抽象化された記号で表され、<br />
+    各要素間の関係性だけが視覚化される。<br />
+    <br />
+    各要素の内部構造は--- その要素自体の性質の由来であるが ---、<br />
+    また別の模式図で表されるべきものである。<br />
+    <br />
+    物事の「記録/再生」は、あるいは「理解/説明」は、<br />
+    いずれこのような作業だと思う。<br />
+    <br />
+    そして、これこそプログラミングの本質ではないだろうか?<br />
+    <br />
+    抽象化に関する、能力と、センスと、情熱には、個人差があり、<br />
+    手法、ツールがそれを反映しているのだろうと思う。<br />
+    <br />
+    抽象化/記号の発明は偉大だ。<br />
+    <br />
+  
+    
+  </div>
+  
+<div class="writeback">
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" />
+  
+</div>
+<div id="links">
+<ul>
+  <li>Search
+    <form action="/note/" method="get" enctype="UTF-8">
+<p>
+<input type="hidden" name="m" value="search" />
+<input type="hidden" name="cache" value="off" />
+<input type="text" name="q" value="" size="10" />
+<select name="u">
+<option value="">ALL</option>
+<option value="info">奥付</option>
+<option value="diary">開発日誌</option>
+</select>
+</p>
+<p>
+<input type="checkbox" name="cmt" value="1" checked="checked" />ﾂｯｺﾐも
+<input type="checkbox" name="and" value="1" checked="checked" />AND
+<input type="submit" value="検索" />
+</p>
+</form>
+
+  </li>
+  <li>Calendar
+    <table border="0" cellspacing="0" cellpadding="0" class="calendar">
+<tr class="caption"><td><a href="index-d_2005-11.html">«</a></td><th colspan="5">December 2005</th><td><a href="index-d_2006-02.html">»</a></td></tr>
+<tr><th class="su">Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th class="sa">Sa</th></tr>
+<tr><td class="su"></td><td></td><td></td><td></td><td>1</td><td>2</td><td class="sa">3</td></tr>
+<tr><td class="su"><a href="index-d_2005-12-04.html" title="PEAR その2">4</a></td><td>5</td><td><a href="index-d_2005-12-06.html" title="MVC2.0 その2">6</a></td><td><a href="index-d_2005-12-07.html" title="MVC2.0 その3">7</a></td><td>8</td><td>9</td><td class="sa">10</td></tr>
+<tr><td class="su">11</td><td><a href="index-d_2005-12-12.html" title="理解/説明">12</a></td><td><a href="index-d_2005-12-13.html" title="サーバ管理その1">13</a></td><td>14</td><td>15</td><td>16</td><td class="sa">17</td></tr>
+<tr><td class="su">18</td><td>19</td><td>20</td><td>21</td><td><a href="index-d_2005-12-22.html" title="PostgreSQL で RDB 設計 その1">22</a></td><td><a href="index-d_2005-12-23.html" title="PostgreSQL で RDB 設計 その2">23</a></td><td class="sa">24</td></tr>
+<tr><td class="su">25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td class="sa"><a href="index-d_2005-12-31.html" title="新年の挨拶">31</a></td></tr>
+</table>
+
+  </li>
+  <li>Archives
+    <ul>
+<li><a href="index-d_2006.html">2006</a> (6)</li>
+<li><a href="index-d_2005.html">2005</a> (32)<ul>
+  <li><a href="index-d_2005-12.html">December</a> (8)</li>
+  <li><a href="index-d_2005-11.html">November</a> (3)</li>
+  <li><a href="index-d_2005-10.html">October</a> (1)</li>
+  <li><a href="index-d_2005-09.html">September</a> (4)</li>
+  <li><a href="index-d_2005-08.html">August</a> (2)</li>
+  <li><a href="index-d_2005-07.html">July</a> (4)</li>
+  <li><a href="index-d_2005-06.html">June</a> (2)</li>
+  <li><a href="index-d_2005-05.html">May</a> (7)</li>
+  <li><a href="index-d_2005-04.html">April</a> (1)</li>
+</ul></li>
+</ul>
+  </li>
+  <li>Categories
+    <ul>
+<li><a href="index.html">Top</a> (39)<ul>
+  <li><a href="info/index.html">奥付</a> (1)</li>
+  <li><a href="diary/index.html">開発日誌</a> (31)</li>
+  <li><a href="bbs/index.html">bbs</a> (0)</li>
+  <li><a href="essay/index.html">随筆</a> (3)</li>
+</ul></li>
+</ul>
+  </li>
+  <li>Recent Entries
+    <ul>
+      <li>09/01 <a href="20060901.html">ブログシステム乗り換えます。</a></li>
+<li>06/12 <a href="diary/20060612.html">open_basedir の 怪</a></li>
+<li>05/29 <a href="diary/20060529.html">俺的PHP似非フレームワーク</a></li>
+<li>05/28 <a href="diary/20060528.html">PHP の強み</a></li>
+<li>03/16 <a href="diary/20060316.html">JavaScript による min-height, max-height の実装。</a></li>
+<li>02/27 <a href="diary/20060227.html">ちょっと安全かもしれない eval() の使い方。</a></li>
+<li>12/31 <a href="20051231.html">新年の挨拶</a></li>
+<li>12/23 <a href="diary/20051223.html">PostgreSQL で RDB 設計 その2</a></li>
+<li>12/22 <a href="diary/20051222.html">PostgreSQL で RDB 設計 その1</a></li>
+<li>12/13 <a href="diary/server/20051213.html">サーバ管理その1</a></li>
+
+    </ul>
+  </li>
+  <li>Recent Comments
+    
+  </li>
+  <li>Recent TrackBacks
+    
+  </li>
+  <li>Syndicate this site
+    <ul>
+      <li><a href="http://legacy.tonextone.com/note/rss.rdf">RSS 1.0 Feed</a></li>
+    </ul>
+  </li>
+  <li>Powered by
+    <ul>
+      <li>
+        <a href="http://rinn.e-site.jp/rnote/">rNote 0.9.7.5</a>
+      </li>
+      <li>
+        <a href="http://www.bookshelf.jp/soft/meadow.html">Meadow</a>
+      </li>
+      <li>
+        <a href="http://winscp.net/eng/">WinSCP</a>
+      </li>
+    </ul>
+  </li>
+  <li>Del.icio.us tags
+    <script type="text/javascript" src="http://del.icio.us/feeds/js/tags/tonextone?sort=freq;totals;size=10-17;color=000000-0000ff;title="></script>
+  </li>
+  <li>Flickr recent photos
+    <!-- Start of Flickr Badge -->
+    <style type="text/css">/*
+    Images are wrapped in divs classed "flickr_badge_image" with ids
+    "flickr_badge_imageX" where "X" is an integer specifying ordinal position.
+    Below are some styles to get you started!
+    */
+    #flickr_badge_uber_wrapper {text-align:center; width:auto;}
+    #flickr_badge_wrapper {padding:0px;}
+    .flickr_badge_image {float:left; margin:2px;}
+    .flickr_badge_image img {border: 1px solid black !important;}
+    #flickr_badge_source {text-align:left; margin:0 10px 0 10px;}
+    #flickr_badge_icon {float:left; margin-right:5px;}
+    #flickr_www {display:block; padding:0 10px 0 10px !important; font: 11px Arial, Helvetica, Sans serif !important; color:#3993ff !important;}
+    #flickr_badge_uber_wrapper a:hover,
+    #flickr_badge_uber_wrapper a:link,
+    #flickr_badge_uber_wrapper a:active,
+    #flickr_badge_uber_wrapper a:visited {text-decoration:none !important; background:inherit !important;color:#3993ff;}
+    #flickr_badge_wrapper {background-color:#ffffff;border: none;}
+    #flickr_badge_source {padding:0 !important; font: 11px Arial, Helvetica, Sans serif !important; color:#666666 !important;}
+    </style>
+    <div id="flickr_badge_uber_wrapper">
+      <a href="http://www.flickr.com" id="flickr_www">www.<strong style="color:#3993ff">flick<span style="color:#ff1c92">r</span></strong>.com</a>
+      <div id="flickr_badge_wrapper">
+        <script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=10&display=latest&size=t&layout=x&source=user&user=11342253%40N00"></script>
+      </div>
+    </div>
+    <br style="clear:both;">
+    <!-- End of Flickr Badge -->
+    
+  </li>
+  <li>Last.fm Weekly tracks
+    <a href="http://www.last.fm/user/tonextone/?chartstyle=sideGrey"><img src="http://imagegen.last.fm/sideGrey/tracks/tonextone.gif" border="0" alt="tonextone's Last.fm Weekly Tracks Chart" /></a>
+  </li>
+  <li>早起き生活
+    <a href="http://www.hayaoki-seikatsu.com/">
+      <img src="http://www.hayaoki-seikatsu.com/users/tonextone/graphs/sidebar.png" width="150" height="150" alt="早起き生活">
+    </a>
+  </li>
+  <li>
+    <a href="http://www.technorati.com/claim/ud3qys35px" rel="me"></a>
+  </li>
+</ul>
+</div>
+</body></html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="ja" lang="ja" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>tonextone.com/note/</title>
+  <link rel="top" href="index.html" />
+<link rel="prev" href="index-p_1.html" title="6-10" />
+
+  <link rel="stylesheet" href="style/style-sites.css" type="text/css" media="screen" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://legacy.tonextone.com/note/rss.rdf" />
+ </head>
+ <body>
+    <h1 id="banner"><a href="/note/../">tonextone.com</a><a href="https://tonextone.com/note/">/note/</a></h1>
+   <p id="credit">Last-modified: 2006-09-01 (金)</p>
+   <p id="credit">Copyright ©master_at_tonextone.com All rights reserved.</p>
+<div id="content">
+  
+  
+    <div id="menu">
+      <p>Category:<a href="index.html">Top</a> (Total 38 items)</p>
+<p><a href="index-p_1.html">« 6-10</a> | 1-5</p>
+    </div>
+    <div class="item">
+  <h3><a href="20060901.html">ブログシステム乗り換えます。</a></h3>
+  <span class="meta">
+    Posted : 2006-09-01 00:00 / Category : [Top]
+  </span>
+  <div class="text">
+    今後、はこちら↓に書いていきます。<br />
+    <a href ="https://tonextone.com/type/">/type/</a>
+  
+    
+  </div>
+  
+    
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/20060612.html">open_basedir の 怪</a></h3>
+  <span class="meta">
+    Posted : 2006-06-12 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    PHP は、mod_php での運用がデファクトスタンダードになっている。<br />
+    共用のレンタルサーバでも、mod_php が使えるのが普通だろう。<br />
+    <br />
+    で、safe_mode, open_basedir なわけである(<a href="http://jp2.php.net/manual/ja/security.apache.php" target="_blank">参考</a>)。<br />
+    <br />
+    私がこれまで構築してきたサービスは、<br />
+    専用サーバで、管理者アカウントを外部に配布しない、<br />
+    いわゆる「自社サービス」がほとんどだったので、<br />
+    safe_mode, open_basedir 系は実際に本気で使った経験が無かった。<br />
+    <br />
+    で、最近構築しているサービスが、複数の仮想ホストでの運用になるので、<br />
+    初めて本気で open_basedir を使ってみた。<br />
+    <br />
+    …これが、なかなか上手くいかなかった。<br />
+    ここ2ヶ月くらい、試しては上手くいかず、あきらめ切れず、また試す…<br />
+    の繰り返しだったが、やっと上手くいった。<br />
+    <br />
+    合理的な原因が見つかっていないので、様子をみている段階だが、<br />
+    現段階の結論:<br />
+    <blockquote>
+    httpd.conf で、 open_basedir の設定をしている場合、<br />
+    .htaccess で、 mbstring.* 系の設定をすると、<br />
+    open_basedir が不具合を起こすようだ。<br />
+    php.ini / ini_set() なら大丈夫っぽい。<br />
+    </blockquote>
+
+    <br />
+
+    以下、現象 〜 経過を早送り:<br />
+
+    <ul>
+      <li>
+        open_basedir の設定を httpd.conf の&lt;VirtualHost&gt;コンテナに書くと、<br />
+        以下のようなエラーが出る。
+<pre>
+PHP Fatal error:  Unknown: Cannot find serialization handler xxx in Unknown on line 0, referer: xxxxxxxxx
+</pre>
+        mod_php が PHP の構文解析に失敗しているような感じ。
+      </li>
+      <li>
+        このエラーの再現率は、30% 程度。
+      </li>
+      <li>
+        zend-multibyte, Zend Optimizer を怪しむ(野生の勘)。
+      </li>
+      <li>
+        怪しい部分について、有効 / 無効を切替えたり、<br />
+        考え得る設定の組み合わせを、ほとんど総当りで試す。<br />
+      </li>
+      <li>
+        解決の兆しも見えず…。
+      </li>
+      <li>
+        やけになって、デフォルトの php.ini で試す。
+      </li>
+      <li>
+        相変わらず…(´Д⊂ ﾓｳﾀﾞﾒﾎﾟ
+      </li>
+      <li>
+        .htaccess での設定とか、ini_set() 系の設定も消してみる。
+      </li>
+      <li>
+        <span style="font-size: 20px;">あ、</span>良さそう。
+      </li>
+      <li>
+        設定調整して様子見。&laquo; 今ここ。
+      </li>
+    </ul>
+
+    なんていうか、微妙すぎ…。
+
+  
+    
+  </div>
+  
+    
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/20060529.html">俺的PHP似非フレームワーク</a></h3>
+  <span class="meta">
+    Posted : 2006-05-29 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    <a href="https://tonextone.com/note/diary/20060528.html">前のエントリ</a>で、まとめるって言ったけど、<br />
+    そんな大層なものでもないし、ちゃんとまとめる自信が無くなってきたので、<br />
+    とりあえず簡単に説明すると…
+
+    <h4>
+      スクリプトを埋め込めるんだから、PHP 自体がテンプレートシステム。
+    </h4>
+    <dl>
+      <dt>メリット</dt>
+      <dd>
+        テンプレートシステムを導入しなくて良い。<br />
+        <br />
+      </dd>
+      <dt>デメリット</dt>
+      <dd>
+        PHP そのものなので、何でもできてしまうという意味で、リスクがある。<br />
+        <br />
+      </dd>
+    </dl>
+
+    <h4>
+      テンプレート上の HTML コードは、関数として定義する(必要であればブロックに分けて)。
+    </h4>
+    例えば、テンプレート上に、ループするブロックがある場合、<br />
+    そのブロックの始まりと、終わりに、関数定義の始まりと、終わりを埋め込む。<br />
+    つまり、
+    <pre>&lt;? function hoge_loop($_){ ?&gt;</pre>
+    と、
+    <pre>&lt;? } /* function hoge_loop($_) */ ?&gt;</pre>
+    とで、囲む。<br />
+    ブロック内で展開したい変数は、'$_' という連想配列に入れて引数として渡す。<br />
+    残りのブロックも同様に関数化する。<br />
+    「レンダリング」= 関数のコール。<br />
+    <dl>
+      <dt>メリット</dt>
+      <dd>
+        「レンダリング」を、ブロック単位で制御できる。<br />
+        <br />
+      </dd>
+      <dt>デメリット</dt>
+      <dd>
+        テンプレートに、&lt;? function foo_bar($_){ ?&gt; とか記述されていてキモい(が、もう慣れた)。<br />
+        間違って消されると「そんな関数見つかりません」系のエラーが発生する。<br />
+        <br />
+      </dd>
+    </dl>
+
+    <h4>
+      ヴューに対してリクエストがあって、対応するコントローラが読み込まれる。
+    </h4>
+    テンプレートたる PHP ファイルから、<strong>ロジックが別ファイルとして分離されて</strong>、<br />
+    <strong>ヴュー → コントローラ の対を成す</strong>。<br />
+    &raquo;<strong>「ページ・コントローラ」!</strong><br />
+    <br />
+    <strong>ヴューがリクエストを受けて、ヴューがコントローラを読み込む</strong>イメージ。<br />
+    (フロント・コントローラの逆…)<br />
+    &raquo;<strong>「リア・コントローラ」!!</strong><br />
+    <br />
+    特定のヴューに対応するコントローラは、<br />
+    ヴューの SCRIPT_FILENAME から 1 対 1 に自動決定され、include 系の命令で読み込まれる。<br />
+    そのコントローラの中で、<br />
+    ブロック単位で、テンプレートの「レンダリング」(=関数のコール)が行われる。<br />
+    <br />
+    ついでに、拡張子 html で mod_php が動作するように設定して、<br />
+    テンプレートたる PHP ファイルの拡張子は html とする。<br />
+
+    <dl>
+      <dt>メリット</dt>
+      <dd>
+        「ページ・コントローラ」の〜:<br />
+        ロジックがページ単位で分割されるので、<br />
+        工数を見積もる際に見通しが良く、メンテナンスも容易。<br />
+        <br />
+        「リア・コントローラ」の〜:<br />
+        mod_rewrite やら、ルーティングやら、による仮想 URL じゃなくて、<br />
+        静的 HTML と同様に、URL に対応するパスに<br />
+        HTML っぽいファイル(実は PHP)が実在するので分りやすい<br />
+        (テンプレートを担当するデザイナにも受け入れられやすい)。<br />
+        <br />
+      </dd>
+      <dt>デメリット</dt>
+      <dd>
+        「同一の URL に対するリクエストだけれど、<br />
+        　リクエスト変数によって条件分岐してヴューを切替えたい」というような場合には、<br />
+        例外的にフロント・コントローラ的なものを配置する必要がある。<br />
+        <br />
+      </dd>
+    </dl>
+
+    <h4>
+      モロモロの処理を auto_prepend, auto_append .
+    </h4>
+    上記の、 ヴュー → コントローラ の対応付けや、<br />
+    その他、お決まりの処理(セキュリティ対策、DB接続、セッション、認証など)は、<br />
+    1 つのファイル(prepend.php とか)にまとめておいて、それを auto_prepend .<br />
+    更に、コントローラの読み込みや、その他、後始末系の処理も、<br />
+    1 つのファイル(append.php とか)にまとめておいて、それを auto_append .<br />
+    <dl>
+      <dt>メリット</dt>
+      <dd>
+        テンプレートたる PHP ファイルに、include 系の命令が一切露出しないので、<br />
+        テンプレートとしてスッキリするし、ちょっとだけセキュアな気もする。<br />
+        <br />
+      </dd>
+      <dt>デメリット</dt>
+      <dd>
+        あるのかもしれないが特に感じない。<br />
+        <br />
+      </dd>
+    </dl>
+
+    <h4>
+      include 系を随所で使う。
+    </h4>
+    フロント・コントローラでは、全ての処理が一箇所に集まるので DRY にしやすいが、<br />
+    「ページ・コントローラ」では事情が違う。<br />
+    代わりに、include 系の命令を多用する事で、DRY を追求する。<br />
+    <dl>
+      <dt>メリット</dt>
+      <dd>
+        あるのかもしれないが特に感じない。<br />
+        <br />
+      </dd>
+      <dt>デメリット</dt>
+      <dd>
+        ルールが無いと見通しが悪くなる。<br />
+        <br />
+      </dd>
+    </dl>
+
+    <h4>
+    という感じなんだけど…
+    </h4>
+    PHP でしかあり得ない仕組みなので、他の言語から見ると気持ち悪いだろうけれど、<br />
+    デザイナとの分業のし易さを追求した結果の産物であって、<br />
+    実際、その意味では充分な効果が得られたと思う。<br />
+    <br />
+    幸か不幸か、私がまともに使えるのは PHP だけなので、<br />
+    今でも、特に違和感も不便も感じず、普通に使っているけれど、<br />
+    そろそろ、その違和感とか不便さを理解しといたほうが良い気がする(汗笑)。<br />
+    <br />
+    それには、PHP 以外を使ってみる必要があるだろう、<br />
+    というわけで、 Perl を改めて勉強しようと思った次第。<br />
+  
+    
+  </div>
+  
+<div class="writeback">
+    <h4>トラックバック</h4>
+    
+    
+        (4)<br />
+    
+    <h4>ツッコミ</h4>
+    <dl id="writebacklist">
+    <dt>1: master <small>(06/03 14:28) </small></dt><dd>俺がフレームワークに求めるのは、規約であって制約ではない。<br />と、ふと思った。</dd>
+
+    </dl>
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/20060528.html">PHP の強み</a></h3>
+  <span class="meta">
+    Posted : 2006-05-28 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    「<a href="http://labs.gree.jp/Top/Study/20060528.html">オープンソーステクノロジー勉強会 第3回</a>」に参加した。<br />
+    今回のテーマはウェブアプリケーションフレームワーク。<br />
+    高橋さんが RoR 、藤本さんが Ethna の紹介をするという、大変に豪華な勉強会だった。<br />
+    <br />
+    高橋さんのお話で興味深かった点をメモ:<br />
+
+    <h4>RoR: 実行環境の現状。</h4>
+    <dl>
+      <dt>Apache + mod_ruby :</dt>
+      <dd>
+        ruby が富豪的なので、<br />
+        実際は、Apache + mod_ruby をアプリ専用にして、<br />
+        フロントにもう一個ウェブサーバ立てるのが普通。<br />
+        → 面倒。
+      </dd>
+      <dt>じゃあ、WEBrick とか:</dt>
+      <dd>
+        フロントに Apache 立てておいて、<br />
+        アプリ専用のウェブサーバは WEBrick で。<br />
+        <pre>$ apachectl graceful;</pre>
+        的な仕組みが無い。
+      </dd>
+      <dt>Apache + FastCGI :</dt>
+      <dd>不安定?</dd>
+      <dt>Lighttpd + FastCGI :</dt>
+      <dd>結構、使われている。でも、Apache ほど多機能ではない。</dd>
+    </dl>
+
+    <h4>RoR: 日本語化の現状。</h4>
+    <dl>
+      <dt>
+        <a href="http://jp.rubyist.net/magazine/?0012-RubyOnRails">ActiveHeart</a> :
+      </dt>
+      <dd>
+        シンプルなので汎用性がある。
+      </dd>
+      <dt>
+        <a href="http://wota.jp/ac/?date=20060204">スペジェネ</a> :
+      </dt>
+      <dd>
+        情熱的なので、ハマる場合と、ハマらない場合がある。
+      </dd>
+      <dt>
+        gettext :
+      </dt>
+      <dd>
+        本格的だが敷居が高い。
+      </dd>
+    </dl>
+
+    <h4>RoR: 文字コードの現状。</h4>
+    <dl>
+      <dt>
+        デフォルトの文字コード指定 :
+      </dt>
+      <dd>
+        $KCODE = 'u'; # s,e,n
+      </dd>
+      <dt>
+        フィルタで変換 :
+      </dt>
+      <dd>
+        before/after filter に、NKF, iconv フィルタとかを挿せる。
+      </dd>
+    </dl>
+
+    <br />
+    で、PHPはどうなんだ。<br />
+    <br />
+
+    <h4>PHP: Apache の mod_* だけど…</h4>
+    <dl>
+      <dt>mod_perl, mod_ruby</dt>
+      <dd>
+        Apache を LL で拡張するためのモジュール。<br />
+        → 玄人向き。
+      </dd>
+      <dt>mod_php</dt>
+      <dd>
+        Apache で LL を処理するためのモジュール。<br />
+        → それ以外できない。潔い。安全。
+      </dd>
+    </dl>
+
+    <h4>PHP: 広く普及している。</h4>
+    普及率が高くて実行環境も mod_php が標準的。<br />
+    共用レンタルサーバとかでも普通に提供されている。<br />
+    したがって、既存のシステムの改修などにも利用し易い。<br />
+    <br />
+    &lt;所感&gt;<br />
+    <br />
+    共用レンタルサーバとかでも mod_php が採用されているのは、<br />
+    mod_perl, mod_ruby と違って「必要最低限の事しかできない」からだと思う。<br />
+    とは言え、mod_* であるからには、Apache の権限で実行されるので、<br />
+    mod_* に関わる全てのファイルのパーミションは、<br />
+    ---赤の他人のファイルであろうとも---<br />
+    Apache が読めるようになっている事が「必要」であり、<br />
+    重要な情報を隠蔽する事が難しい(できない?)。<br />
+    にもかかわらず PHP は共用サーバにも普及してしまったので、苦肉の策として<br />
+    safe_mode, open_basedir <br />
+    などの設定項目が設けられている。<br />
+    <br />
+    &lt;/所感&gt;<br />
+    <br />
+
+    <h4>PHP: フレームワークは?</h4>
+    フロント・コントローラなフレームワークが主流だが、既存のシステムとの共存が難しいのではないか?<br />
+    PHP の強みを活かすには、「ページ・コントローラ」なフレームワークのほうが、<br />
+    既存のシステムと共存しやすくて良いのでは?<br />
+    <br />
+    &lt;所感&gt;<br />
+    <br />
+    「ページ・コントローラ」というのは、ページ毎にコントローラを持つという事。<br />
+    フロント・コントローラ主流の昨今において、「ページ・コントローラ」は原点回帰とも言える。<br />
+    最近 PHP 界隈で、そういう話がチラホラ出ているけど、半分はネタだと思う。何となく。<br />
+    実際、高橋さんの話もネタだと思う。<br />
+    <br />
+    でも、私が 5 年ほど使い続けているフレームワーク的なモノも、<br />
+    そんな「ページ・コントローラ」に該当する気がする。<br />
+    ネタではなくマジで使い込んでしまっている。<br />
+    なので、「ページ・コントローラ」の実装例として、後でちゃんとまとめる事にしよう。<br />
+    <br />
+    &lt;/所感&gt;<br />
+  
+    
+  </div>
+  
+<div class="writeback">
+    <h4>トラックバック</h4>
+    
+    
+        (2)<br />
+    
+    <h4>ツッコミ</h4>
+    <dl id="writebacklist">
+    <dt>1: kdmsnr <small>(06/01 17:19) </small></dt><dd>&gt; 実際、高橋さんの話もネタだと思う。<br /><br />ネタではなく、いつも言ってます。</dd>
+<dt>2: master <small>(06/01 23:39) </small></dt><dd>&gt; kdmsnr さん<br />ありがとうございます。<br />ネタじゃないんですね！それは心強いです。<br />ずっと「ページ・コントローラ」でがんばってきた自分としては、<br />「ページ・コントローラ」という名前がついただけでも嬉しいのですが。<br /><br />capsctrl チェックしてます！</dd>
+
+    </dl>
+    
+    
+        [ このエントリへはツッコミ出来ません ]<br />
+    
+</div>
+</div>
+<br class="sep" /><div class="item">
+  <h3><a href="diary/20060316.html">JavaScript による min-height, max-height の実装。</a></h3>
+  <span class="meta">
+    Posted : 2006-03-16 00:00 / Category : [開発日誌]
+  </span>
+  <div class="text">
+    動的なウェブサイトなどで、画面上のボックスの内容量が予測できない場合、<br />
+    CSS で overflow なんか使ったりします。ですよね?<br />
+    でも、overflow なボックスのサイズが固定だと、逆にまだ何も内容が無い場合に、余白になってしまいます。<br />
+    「じゃあ、 max-width, max-height を使おうよ」と言う事になるのですが、<br />
+    min-width, max-width, min-height, max-height は IE で実装されてません。このやろう。<br />
+    <br />
+    なので、JavaScript で実現する感じのモノを作りました。
+    <a href="https://tonextone.com/neta/min_max/test.html">&raquo;デモ</a><br />
+    仕組みは単純なので、興味があったら、ソース読んでください。<br />
+  
+    
+  </div>
+  
+    
+</div>
+<br class="sep" />
+  
+</div>
+<div id="links">
+<ul>
+  <li>Search
+    <form action="/note/" method="get" enctype="UTF-8">
+<p>
+<input type="hidden" name="m" value="search" />
+<input type="hidden" name="cache" value="off" />
+<input type="text" name="q" value="" size="10" />
+<select name="u">
+<option value="">ALL</option>
+<option value="info">奥付</option>
+<option value="diary">開発日誌</option>
+</select>
+</p>
+<p>
+<input type="checkbox" name="cmt" value="1" checked="checked" />ﾂｯｺﾐも
+<input type="checkbox" name="and" value="1" checked="checked" />AND
+<input type="submit" value="検索" />
+</p>
+</form>
+
+  </li>
+  <li>Calendar
+    <table border="0" cellspacing="0" cellpadding="0" class="calendar">
+<tr class="caption"><td><a href="index-d_2006-06.html">«</a></td><th colspan="5">September 2006</th><td></td></tr>
+<tr><th class="su">Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th class="sa">Sa</th></tr>
+<tr><td class="su"></td><td></td><td></td><td></td><td></td><td><a href="index-d_2006-09-01.html" title="ブログシステム乗り換えます。">1</a></td><td class="sa">2</td></tr>
+<tr><td class="su">3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td class="sa">9</td></tr>
+<tr><td class="su">10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td class="sa">16</td></tr>
+<tr><td class="su">17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td class="sa">23</td></tr>
+<tr><td class="su">24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td class="sa">30</td></tr>
+</table>
+
+  </li>
+  <li>Archives
+    <ul>
+<li><a href="index-d_2006.html">2006</a> (6)</li>
+<li><a href="index-d_2005.html">2005</a> (32)</li>
+</ul>
+  </li>
+  <li>Categories
+    <ul>
+<li><a href="index.html">Top</a> (39)<ul>
+  <li><a href="info/index.html">奥付</a> (1)</li>
+  <li><a href="diary/index.html">開発日誌</a> (31)</li>
+  <li><a href="bbs/index.html">bbs</a> (0)</li>
+  <li><a href="essay/index.html">随筆</a> (3)</li>
+</ul></li>
+</ul>
+  </li>
+  <li>Recent Entries
+    <ul>
+      <li>09/01 <a href="20060901.html">ブログシステム乗り換えます。</a></li>
+<li>06/12 <a href="diary/20060612.html">open_basedir の 怪</a></li>
+<li>05/29 <a href="diary/20060529.html">俺的PHP似非フレームワーク</a></li>
+<li>05/28 <a href="diary/20060528.html">PHP の強み</a></li>
+<li>03/16 <a href="diary/20060316.html">JavaScript による min-height, max-height の実装。</a></li>
+<li>02/27 <a href="diary/20060227.html">ちょっと安全かもしれない eval() の使い方。</a></li>
+<li>12/31 <a href="20051231.html">新年の挨拶</a></li>
+<li>12/23 <a href="diary/20051223.html">PostgreSQL で RDB 設計 その2</a></li>
+<li>12/22 <a href="diary/20051222.html">PostgreSQL で RDB 設計 その1</a></li>
+<li>12/13 <a href="diary/server/20051213.html">サーバ管理その1</a></li>
+
+    </ul>
+  </li>
+  <li>Recent Comments
+    
+  </li>
+  <li>Recent TrackBacks
+    
+  </li>
+  <li>Syndicate this site
+    <ul>
+      <li><a href="http://legacy.tonextone.com/note/rss.rdf">RSS 1.0 Feed</a></li>
+    </ul>
+  </li>
+  <li>Powered by
+    <ul>
+      <li>
+        <a href="http://rinn.e-site.jp/rnote/">rNote 0.9.7.5</a>
+      </li>
+      <li>
+        <a href="http://www.bookshelf.jp/soft/meadow.html">Meadow</a>
+      </li>
+      <li>
+        <a href="http://winscp.net/eng/">WinSCP</a>
+      </li>
+    </ul>
+  </li>
+  <li>Del.icio.us tags
+    <script type="text/javascript" src="http://del.icio.us/feeds/js/tags/tonextone?sort=freq;totals;size=10-17;color=000000-0000ff;title="></script>
+  </li>
+  <li>Flickr recent photos
+    <!-- Start of Flickr Badge -->
+    <style type="text/css">/*
+    Images are wrapped in divs classed "flickr_badge_image" with ids
+    "flickr_badge_imageX" where "X" is an integer specifying ordinal position.
+    Below are some styles to get you started!
+    */
+    #flickr_badge_uber_wrapper {text-align:center; width:auto;}
+    #flickr_badge_wrapper {padding:0px;}
+    .flickr_badge_image {float:left; margin:2px;}
+    .flickr_badge_image img {border: 1px solid black !important;}
+    #flickr_badge_source {text-align:left; margin:0 10px 0 10px;}
+    #flickr_badge_icon {float:left; margin-right:5px;}
+    #flickr_www {display:block; padding:0 10px 0 10px !important; font: 11px Arial, Helvetica, Sans serif !important; color:#3993ff !important;}
+    #flickr_badge_uber_wrapper a:hover,
+    #flickr_badge_uber_wrapper a:link,
+    #flickr_badge_uber_wrapper a:active,
+    #flickr_badge_uber_wrapper a:visited {text-decoration:none !important; background:inherit !important;color:#3993ff;}
+    #flickr_badge_wrapper {background-color:#ffffff;border: none;}
+    #flickr_badge_source {padding:0 !important; font: 11px Arial, Helvetica, Sans serif !important; color:#666666 !important;}
+    </style>
+    <div id="flickr_badge_uber_wrapper">
+      <a href="http://www.flickr.com" id="flickr_www">www.<strong style="color:#3993ff">flick<span style="color:#ff1c92">r</span></strong>.com</a>
+      <div id="flickr_badge_wrapper">
+        <script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=10&display=latest&size=t&layout=x&source=user&user=11342253%40N00"></script>
+      </div>
+    </div>
+    <br style="clear:both;">
+    <!-- End of Flickr Badge -->
+    
+  </li>
+  <li>Last.fm Weekly tracks
+    <a href="http://www.last.fm/user/tonextone/?chartstyle=sideGrey"><img src="http://imagegen.last.fm/sideGrey/tracks/tonextone.gif" border="0" alt="tonextone's Last.fm Weekly Tracks Chart" /></a>
+  </li>
+  <li>早起き生活
+    <a href="http://www.hayaoki-seikatsu.com/">
+      <img src="http://www.hayaoki-seikatsu.com/users/tonextone/graphs/sidebar.png" width="150" height="150" alt="早起き生活">
+    </a>
+  </li>
+  <li>
+    <a href="http://www.technorati.com/claim/ud3qys35px" rel="me"></a>
+  </li>
+</ul>
+</div>
+</body></html>
